@@ -37,7 +37,6 @@ class DBUtils:
     def bind(self, use_ssl=True, force=False):
 
         if not self.session or force:
-            self.read_jans_schema()
             base.logIt("Making MySql Conncetion")
             result = self.mysqlconnection()
             if not result[0]:
@@ -453,3 +452,4 @@ class DBUtils:
         return
 
 dbUtils = DBUtils()
+dbUtils.read_jans_schema()
