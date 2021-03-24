@@ -199,6 +199,7 @@ def do_installation():
             jansInstaller.setup_init_scripts()
 
             # Installing jans components
+            rdbmInstaller.dbUtils.read_jans_schema()
             rdbmInstaller.start_installation()
 
         if (Config.installed_instance and 'installHttpd' in Config.addPostSetupService) or (not Config.installed_instance and Config.installHttpd):

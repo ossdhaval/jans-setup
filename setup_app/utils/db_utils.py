@@ -452,4 +452,4 @@ class DBUtils:
         return
 
 dbUtils = DBUtils()
-dbUtils.read_jans_schema()
+
