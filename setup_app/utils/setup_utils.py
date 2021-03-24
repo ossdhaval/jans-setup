@@ -366,13 +366,6 @@ class SetupUtils(Crypto64):
         if os.path.isfile(Config.ldapPassFn):
             os.remove(Config.ldapPassFn)
 
-    def getMappingType(self, mtype):
-        location = []
-        for group in Config.mappingLocations:
-            if group != 'default' and Config.mappingLocations[group] == mtype:
-                location.append(group)
-
-        return location
 
     def merge_dicts(self, *dict_args):
         result = {}
@@ -461,22 +454,8 @@ class SetupUtils(Crypto64):
             self.logIt("Error adding group", True)
 
     def fix_init_scripts(self, serviceName, initscript_fn):
-        if base.snap:
-            return
 
         changeTo = None
-
-        couchbase_mappings = self.getMappingType('couchbase')
-
-        if Config.persistence_type == 'couchbase' or 'default' in couchbase_mappings:
-            changeTo = 'couchbase-server'
-
-        if Config.wrends_install == InstallTypes.REMOTE or Config.cb_install == InstallTypes.REMOTE:
-            changeTo = ''
-
-        if changeTo != None:
-            for service in Config.service_requirements:
-                Config.service_requirements[service][0] = Config.service_requirements[service][0].replace('opendj', changeTo)
 
         with open(initscript_fn) as f:
             initscript = f.readlines()
@@ -486,10 +465,6 @@ class SetupUtils(Crypto64):
                 initscript[i] = '# Provides:          {0}\n'.format(serviceName)
             elif l.startswith('# description:'):
                 initscript[i] = '# description: Jetty 9 {0}\n'.format(serviceName)
-            elif l.startswith('# Required-Start:'):
-                initscript[i] = '# Required-Start:    $local_fs $network {0}\n'.format(Config.service_requirements[serviceName][0])
-            elif l.startswith('# chkconfig:'):
-                initscript[i] = '# chkconfig: 345 {0} {1}\n'.format(Config.service_requirements[serviceName][1], 100 - Config.service_requirements[serviceName][1])
 
         if (base.clone_type == 'rpm' and base.os_initdaemon == 'systemd') or base.deb_sysd_clone:
             service_init_script_fn = os.path.join(Config.distFolder, 'scripts', serviceName)

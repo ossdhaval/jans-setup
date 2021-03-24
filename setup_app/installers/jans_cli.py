@@ -64,12 +64,12 @@ class JansCliInstaller(BaseInstaller, SetupUtils):
         if Config.installConfigApi:
             config['DEFAULT']['jca_client_id'] = Config.jca_client_id
             config['DEFAULT']['jca_client_secret_enc'] = Config.jca_client_encoded_pw
-            
-        if Config.installScimServer:    
-            config['DEFAULT']['scim_client_id'] = Config.scim_client_id
-            config['DEFAULT']['scim_client_secret_enc'] = Config.scim_client_encoded_pw
 
         with open(self.config_ini_fn, 'w') as f:
             config.write(f)
 
-        
+        # remove scim components
+        self.logIt("Removing jans-cli scim components")
+        self.run([paths.cmd_rm, '-r', '-f', os.path.join(self.jans_cli_install_dir, 'scim')])
+        self.run([paths.cmd_rm, '-f', os.path.join(self.jans_cli_install_dir, 'scim.yaml')])
+        self.run([paths.cmd_unlink, os.path.join(self.jans_cli_install_dir, 'scim-cli.py')])

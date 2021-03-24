@@ -201,7 +201,6 @@ class ConfigApiInstaller(SetupUtils, BaseInstaller):
         self.logIt("Loding Jans Config Api test data")
 
 
-
         if not base.argsp.t:
             self.render_templates_folder(os.path.join(Config.templateFolder, 'test/jans-config-api'))
 

@@ -527,16 +527,6 @@
       "type": "VARCHAR"
     }
   },
-  "jansSmtpConf": {
-    "mysql": {
-      "type": "JSON"
-    }
-  },
-  "jansResource": {
-    "mysql": {
-      "type": "TINYTEXT"
-    }
-  },
   "scimCustomSecond": {
     "mysql": {
       "type": "JSON"

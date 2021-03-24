@@ -169,7 +169,10 @@ class RDBMInstaller(BaseInstaller, SetupUtils):
         sql_indexes_fn = os.path.join(Config.static_rdbm_dir, 'sql_index.json')
         sql_indexes = base.readJsonFile(sql_indexes_fn)
 
-        cb_indexes = base.readJsonFile(base.current_app.CouchbaseInstaller.couchbaseIndexJson)
+
+        couchbaseIndexJson = os.path.join(Config.install_dir, 'static/couchbase/index.json')
+
+        cb_indexes = base.readJsonFile(couchbaseIndexJson)
 
         cb_fields = []
 
@@ -255,21 +258,16 @@ class RDBMInstaller(BaseInstaller, SetupUtils):
                 self.dbUtils.exec_rdbm_query(sql_cmd)
 
     def import_ldif(self):
-        ldif_files = []
-
-        if Config.mappingLocations['default'] == 'rdbm':
-            ldif_files += Config.couchbaseBucketDict['default']['ldif']
-
-        ldap_mappings = self.getMappingType('rdbm')
-
-        for group in ldap_mappings:
-            ldif_files +=  Config.couchbaseBucketDict[group]['ldif']
+        ldif_files = [
+                        Config.ldif_base, 
+                        Config.ldif_attributes,
+                        Config.ldif_scopes,
+                        Config.ldif_configuration,
+                        Config.ldif_metric,
+                    ]
 
         if Config.ldif_metric in ldif_files:
             ldif_files.remove(Config.ldif_metric)
-
-        if Config.ldif_site in ldif_files:
-            ldif_files.remove(Config.ldif_site)
 
         Config.pbar.progress(self.service_name, "Importing ldif files to {}".format(Config.rdbm_type), False)
         if not Config.ldif_base in ldif_files:

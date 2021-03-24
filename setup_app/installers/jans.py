@@ -24,7 +24,8 @@ class JansInstaller(BaseInstaller, SetupUtils):
     def __repr__(self):
         setattr(base.current_app, self.__class__.__name__, self)
         txt = ''
-        try:
+        #try:
+        if 1:
             if not Config.installed_instance:
                 txt += 'hostname'.ljust(30) + Config.hostname.rjust(35) + "\n"
                 txt += 'orgName'.ljust(30) + Config.orgName.rjust(35) + "\n"
@@ -34,28 +35,12 @@ class JansInstaller(BaseInstaller, SetupUtils):
                 txt += 'countryCode'.ljust(30) + Config.countryCode.rjust(35) + "\n"
                 txt += 'Applications max ram (MB)'.ljust(30) + str(Config.application_max_ram).rjust(35) + "\n"
 
-                if Config.wrends_install:
-                    txt += 'OpenDJ max ram (MB)'.ljust(30) + str(Config.opendj_max_ram).rjust(35) + "\n"
-
                 bc = []
 
-                if Config.wrends_install:
-                    t_ = 'opendj'
-                    if Config.wrends_install == InstallTypes.REMOTE:
-                        t_ += '[R]'
-                    bc.append(t_)
-
-                if Config.cb_install:
-                    t_ = 'couchbase'
-                    if Config.cb_install == InstallTypes.REMOTE:
-                        t_ += '[R]'
-                    bc.append(t_)
-
-                if Config.rdbm_install:
-                    t_ = Config.rdbm_type
-                    if Config.rdbm_install_type == InstallTypes.REMOTE:
-                        t_ += '[R]'
-                    bc.append(t_)
+                t_ = Config.rdbm_type
+                if Config.rdbm_install_type == InstallTypes.REMOTE:
+                    t_ += '[R]'
+                bc.append(t_)
 
 
                 if bc:
@@ -64,16 +49,12 @@ class JansInstaller(BaseInstaller, SetupUtils):
 
                 txt += 'Java Type'.ljust(30) + Config.java_type.rjust(35) + "\n"
 
-
             txt += 'Install Apache 2 web server'.ljust(30) + repr(Config.installHttpd).rjust(35) + (' *' if 'installHttpd' in Config.addPostSetupService else '') + "\n"
             txt += 'Install Auth Server'.ljust(30) + repr(Config.installOxAuth).rjust(35) + "\n"
-            txt += 'Install Jans Auth Config Api'.ljust(30) + repr(Config.installConfigApi).rjust(35) + "\n"            
-            txt += 'Install Fido2 Server'.ljust(30) + repr(Config.installFido2).rjust(35) + (' *' if 'installFido2' in Config.addPostSetupService else '') + "\n"
-            txt += 'Install Scim Server'.ljust(30) + repr(Config.installScimServer).rjust(35) + (' *' if 'installScimServer' in Config.addPostSetupService else '') + "\n"
-            txt += 'Install Eleven Server'.ljust(30) + repr(Config.installEleven).rjust(35) + (' *' if 'installEleven' in Config.addPostSetupService else '') + "\n"
-            #txt += 'Install Oxd '.ljust(30) + repr(Config.installOxd).rjust(35) + (' *' if 'installOxd' in Config.addPostSetupService else '') + "\n"
+            txt += 'Install Jans Auth Config Api'.ljust(30) + repr(Config.installConfigApi).rjust(35) + "\n"
             return txt
 
+        """
         except:
             s = ""
             for key in list(Config.__dict__):
@@ -82,18 +63,13 @@ class JansInstaller(BaseInstaller, SetupUtils):
                     if not inspect.ismethod(val):
                         s = s + "%s\n%s\n%s\n\n" % (key, "-" * len(key), val)
             return s
-
+        """
 
     def initialize(self):
         self.service_name = 'jans'
         self.app_type = AppType.APPLICATION
         self.install_type = InstallOption.MONDATORY
         jansProgress.register(self)
-
-        Config.install_time_ldap = time.strftime('%Y%m%d%H%M%SZ', time.gmtime(time.time()))
-        if not os.path.exists(Config.distFolder):
-            print("Please ensure that you are running this script inside Jans container.")
-            sys.exit(1)
 
         #Download jans-auth-client-jar-with-dependencies
         if not os.path.exists(Config.non_setup_properties['oxauth_client_jar_fn']):
@@ -182,9 +158,6 @@ class JansInstaller(BaseInstaller, SetupUtils):
         if not templates:
             templates = Config.ce_templates
 
-        if Config.persistence_type=='couchbase':
-            Config.ce_templates[Config.ox_ldap_properties] = False
-
         for fullPath in templates:
             try:
                 self.renderTemplate(fullPath)
@@ -206,43 +179,6 @@ class JansInstaller(BaseInstaller, SetupUtils):
 
         testTepmplatesFolder = os.path.join(self.templateFolder, 'test')
         self.render_templates_folder(testTepmplatesFolder)
-
-    def writeHybridProperties(self):
-
-        ldap_mappings = self.getMappingType('ldap')
-        couchbase_mappings = self.getMappingType('couchbase')
-        
-        for group in Config.mappingLocations:
-            if group == 'default':
-                default_mapping = Config.mappingLocations[group]
-                break
-
-        storages = set(Config.mappingLocations.values())
-
-        jans_hybrid_roperties = [
-                        'storages: {0}'.format(', '.join(storages)),
-                        'storage.default: {0}'.format(default_mapping),
-                        ]
-
-        if ldap_mappings:
-            jans_hybrid_roperties.append('storage.ldap.mapping: {0}'.format(', '.join(ldap_mappings)))
-            ldap_map_list = []
-            for m in ldap_mappings:
-                if m != 'default':
-                    ldap_map_list.append(Config.couchbaseBucketDict[m]['mapping'])
-            jans_hybrid_roperties.append('storage.ldap.mapping: {0}'.format(', '.join(ldap_map_list)))
-
-        if couchbase_mappings:
-            cb_map_list = []
-            for m in couchbase_mappings:
-                if m != 'default':
-                    cb_map_list.append(Config.couchbaseBucketDict[m]['mapping'])
-            cb_map_str = ', '.join(cb_map_list)
-            jans_hybrid_roperties.append('storage.couchbase.mapping: {0}'.format(cb_map_str))
-
-        jans_hybrid_roperties_content = '\n'.join(jans_hybrid_roperties)
-
-        self.writeFile(Config.jans_hybrid_roperties_fn, jans_hybrid_roperties_content)
 
 
     def setup_init_scripts(self):
@@ -339,8 +275,8 @@ class JansInstaller(BaseInstaller, SetupUtils):
         try:
             apache_user = 'apache' if base.clone_type == 'rpm' else 'www-data'
 
-            self.appendLine("ldap       soft nofile     131072", "/etc/security/limits.conf")
-            self.appendLine("ldap       hard nofile     262144", "/etc/security/limits.conf")
+            #self.appendLine("ldap       soft nofile     131072", "/etc/security/limits.conf")
+            #self.appendLine("ldap       hard nofile     262144", "/etc/security/limits.conf")
             self.appendLine("%s     soft nofile     131072" % apache_user, "/etc/security/limits.conf")
             self.appendLine("%s     hard nofile     262144" % apache_user, "/etc/security/limits.conf")
             self.appendLine("jetty      soft nofile     131072", "/etc/security/limits.conf")
@@ -369,57 +305,10 @@ class JansInstaller(BaseInstaller, SetupUtils):
 
     def post_install_tasks(self):
 
-        self.deleteLdapPw()
+        self.run([paths.cmd_chown, '-R', 'jetty:root', Config.certFolder])
+        self.run([paths.cmd_chmod, '-R', '660', Config.certFolder])
+        self.run([paths.cmd_chmod, 'u+X', Config.certFolder])
 
-        if base.snap:
-            #write post-install.py script
-            self.logIt("Writing snap-post-setup.py", pbar='post-setup')
-            post_setup_script = self.readFile(os.path.join(Config.templateFolder, 'snap-post-setup.py'))
-            
-            for key, val in (('{{SNAP_NAME}}', os.environ['SNAP_NAME']),
-                             ('{{SNAP_PY3}}', paths.cmd_py3),
-                             ('{{SNAP}}', base.snap),
-                             ('{{SNAP_COMMON}}', base.snap_common)
-                             ):
-            
-                post_setup_script = post_setup_script.replace(key, val)
-
-            post_setup_script_fn = os.path.join(Config.install_dir, 'snap-post-setup.py')
-            with open(post_setup_script_fn, 'w') as w:
-                w.write(post_setup_script)
-            self.run([paths.cmd_chmod, '+x', post_setup_script_fn])
-
-            if not Config.installed_instance:
-                Config.post_messages.insert(0, "Please execute:\nsudo " + post_setup_script_fn)
-
-            self.logIt("Setting permissions", pbar='post-setup')
-
-            for crt_fn in Path(os.path.join(base.snap_common, 'etc/certs')).glob('*'):
-                self.run([paths.cmd_chmod, '0600', crt_fn.as_posix()])
-
-            for spath in ('jans', 'etc/jans/conf', 'opendj/db'):
-                for gpath in Path(os.path.join(base.snap_common, spath)).rglob('*'):
-                    if ('node_modules' in gpath.as_posix()) or ('jans/bin' in gpath.as_posix()) or ('jetty/temp' in gpath.as_posix()):
-                        continue
-                    chm_mode = '0755' if os.path.isdir(gpath.as_posix()) else '0600'
-                    self.run([paths.cmd_chmod, chm_mode, gpath.as_posix()])
-
-            self.add_yacron_job(
-                    command = os.path.join(Config.jansOptBinFolder, 'super_gluu_lisence_renewer.py'), 
-                    schedule = '0 2 * * *', # everyday at 2 am
-                    name='super-gluu-license-renewer', 
-                    args={'captureStderr': True}
-                    )
-
-            self.restart('yacron')
-
-            self.writeFile(os.path.join(base.snap_common, 'etc/hosts.jans'), Config.ip + '\t' + Config.hostname)
-
-        else:
-            self.run([paths.cmd_chown, '-R', 'jetty:root', Config.certFolder])
-            self.run([paths.cmd_chmod, '-R', '660', Config.certFolder])
-            self.run([paths.cmd_chmod, 'u+X', Config.certFolder])
-
-            if not Config.installed_instance:
-                cron_service = 'crond' if base.os_type in ['centos', 'red', 'fedora'] else 'cron'
-                self.restart(cron_service)
+        if not Config.installed_instance:
+            cron_service = 'crond' if base.os_type in ['centos', 'red', 'fedora'] else 'cron'
+            self.restart(cron_service)

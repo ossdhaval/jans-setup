@@ -292,7 +292,6 @@ class Crypto64:
             self.logIt("Error writing command : %s" % fn, True)
 
 
-
     def generate_base64_string(self, lines, num_spaces):
         if not lines:
             return None
@@ -305,29 +304,3 @@ class Crypto64:
 
         return plain_b64encoded_text
 
-    def encode_passwords(self):
-        self.logIt("Encoding passwords")
-
-        try:
-            if Config.ldapPass:
-                Config.encoded_ox_ldap_pw = self.obscure(Config.ldapPass)
-            if Config.cb_password:
-                Config.encoded_cb_password = self.obscure(Config.cb_password)
-            Config.encoded_opendj_p12_pass = self.obscure(Config.opendj_p12_pass)
-        except:
-            self.logIt("Error encoding passwords", True, True)
-
-    def encode_test_passwords(self):
-        self.logIt("Encoding test passwords")
-        hostname = Config.hostname.split('.')[0]
-        try:
-            Config.templateRenderingDict['oxauthClient_2_pw'] = Config.templateRenderingDict['oxauthClient_2_inum'] + '-' + hostname
-            Config.templateRenderingDict['oxauthClient_2_encoded_pw'] = self.obscure(Config.templateRenderingDict['oxauthClient_2_pw'])
-
-            Config.templateRenderingDict['oxauthClient_3_pw'] =  Config.templateRenderingDict['oxauthClient_3_inum'] + '-' + hostname
-            Config.templateRenderingDict['oxauthClient_3_encoded_pw'] = self.obscure(Config.templateRenderingDict['oxauthClient_3_pw'])
-
-            Config.templateRenderingDict['oxauthClient_4_pw'] = Config.templateRenderingDict['oxauthClient_4_inum'] + '-' + hostname
-            Config.templateRenderingDict['oxauthClient_4_encoded_pw'] = self.obscure(Config.templateRenderingDict['oxauthClient_4_pw'])
-        except:
-            self.logIt("Error encoding test passwords", True)
