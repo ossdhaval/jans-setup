@@ -12,7 +12,6 @@ from urllib.request import urlretrieve
 from urllib.parse import urljoin
 
 
-setup_package_name = 'master.zip'
 maven_base_url = 'https://maven.jans.io/maven/io/jans/'
 
 app_versions = {
@@ -54,10 +53,10 @@ def download(url, target_fn):
     urlretrieve(url, dst)
 
 
-setup_zip_file = os.path.join(jans_app_dir, 'jans-setup.zip')
+setup_zip_file = os.path.join(jans_app_dir, 'openbank.zip')
 
 if not (argsp.u or argsp.uninstall):
-    setup_url = 'https://github.com/JanssenProject/jans-setup/archive/master.zip'
+    setup_url = 'https://github.com/JanssenProject/jans-setup/archive/refs/heads/openbank.zip'
     download(setup_url, setup_zip_file)
 
     download('https://corretto.aws/downloads/resources/{0}/amazon-corretto-{0}-linux-x64.tar.gz'.format(app_versions['AMAZON_CORRETTO_VERSION']), os.path.join(app_dir, 'amazon-corretto-{0}-linux-x64.tar.gz'.format(app_versions['AMAZON_CORRETTO_VERSION'])))
@@ -121,8 +120,6 @@ elif argsp.uninstall:
 
     print("Uninstalling Jannsen Server...")
 
-    print("Stopping OpenDj Server")
-    os.system('/opt/opendj/bin/stop-ds')
     for service in jetty_services:
         if os.path.exists(os.path.join(jetty_home, service)):
             default_fn = os.path.join('/etc/default/', service)
