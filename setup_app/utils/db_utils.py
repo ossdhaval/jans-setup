@@ -33,7 +33,6 @@ class DBUtils:
     processedKeys = []
     Base = None
     session = None
-    cbm = None
 
     def bind(self, use_ssl=True, force=False):
 
@@ -85,6 +84,8 @@ class DBUtils:
         return self.sqlconnection(log)
 
     def read_jans_schema(self, others=[]):
+        base.logIt("Reading jans schema")
+
         self.jans_attributes = []
 
         for schema_fn_ in ['jans_schema.json', 'custom_schema.json'] + others:

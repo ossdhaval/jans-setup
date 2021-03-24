@@ -32,7 +32,9 @@ class RDBMInstaller(BaseInstaller, SetupUtils):
     def install(self):
         self.local_install()
         jans_schema_files = []
-        
+        if Config.rdbm_install_type == InstallTypes.REMOTE:
+            self.dbUtils.bind()
+
         for jans_schema_fn in ('jans_schema.json', 'custom_schema.json'):
             jans_schema_files.append(os.path.join(Config.install_dir, 'schema', jans_schema_fn))
 
@@ -40,7 +42,7 @@ class RDBMInstaller(BaseInstaller, SetupUtils):
         self.import_ldif()
         self.create_indexes()
         self.rdbmProperties()
-        
+
 
     def local_install(self):
         if not Config.rdbm_password:
@@ -60,7 +62,7 @@ class RDBMInstaller(BaseInstaller, SetupUtils):
                         ]
                     for cmd in sql_cmd_list:
                         self.run("echo \"{}\" | mysql".format(cmd), shell=True)
-        
+
             elif Config.rdbm_type == 'pgsql':
                 cmd_create_db = '''su - postgres -c "psql -U postgres -d postgres -c \\"CREATE DATABASE {};\\""'''.format(Config.rdbm_db)
                 cmd_create_user = '''su - postgres -c "psql -U postgres -d postgres -c \\"CREATE USER {} WITH PASSWORD '{}';\\""'''.format(Config.rdbm_user, Config.rdbm_password)
@@ -168,7 +170,6 @@ class RDBMInstaller(BaseInstaller, SetupUtils):
 
         sql_indexes_fn = os.path.join(Config.static_rdbm_dir, 'sql_index.json')
         sql_indexes = base.readJsonFile(sql_indexes_fn)
-
 
         couchbaseIndexJson = os.path.join(Config.install_dir, 'static/couchbase/index.json')
 
