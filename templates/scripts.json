@@ -1,42 +1,5 @@
 [
   {
-    "dn": "inum=13D3-E7AD,ou=scripts,o=jans",
-    "description": [
-      "Sample Cache Refresh script"
-    ],
-    "displayName": [
-      "cache_refresh"
-    ],
-    "inum": [
-      "13D3-E7AD"
-    ],
-    "jansLevel": [
-      "100"
-    ],
-    "jansModuleProperty": [
-      "{\"value1\":\"location_type\",\"value2\":\"ldap\",\"description\":\"\"}"
-    ],
-    "jansRevision": [
-      "1"
-    ],
-    "jansScr": [
-      %(cache_refresh_samplescript)s
-    ],
-    "jansScrTyp": [
-      "cache_refresh"
-    ],
-    "objectClass": [
-      "top",
-      "jansCustomScr"
-    ],
-    "jansEnabled": [
-      "false"
-    ],
-    "jansProgLng": [
-      "python"
-    ]
-  },
-  {
     "dn": "inum=5018-AF9C,ou=scripts,o=jans",
     "description": [
       "UAF authentication module"
