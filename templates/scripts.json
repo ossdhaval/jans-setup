@@ -1,50 +1,5 @@
 [
   {
-    "dn": "inum=5018-AF9C,ou=scripts,o=jans",
-    "description": [
-      "UAF authentication module"
-    ],
-    "displayName": [
-      "uaf"
-    ],
-    "inum": [
-      "5018-AF9C"
-    ],
-    "jansConfProperty": [
-      "{\"value1\":\"uaf_server_uri\",\"value2\":\"https://%(hostname)s\",\"description\":\"\"}",
-      "{\"value1\":\"uaf_policy_name\",\"value2\":\"default\",\"description\":\"\"}",
-      "{\"value1\":\"qr_options\",\"value2\":\"{ width: 400, height: 400 }\",\"description\":\"\"}",
-      "{\"value1\":\"registration_uri\",\"value2\":\"https://%(hostname)s/identity/register\",\"description\":\"\"}",
-      "{\"value1\":\"send_push_notifaction\",\"value2\":\"false\",\"description\":\"\"}"
-    ],
-    "jansLevel": [
-      "70"
-    ],
-    "jansModuleProperty": [
-      "{\"value1\":\"location_type\",\"value2\":\"ldap\",\"description\":\"\"}",
-      "{\"value1\":\"usage_type\",\"value2\":\"interactive\",\"description\":\"\"}"
-    ],
-    "jansRevision": [
-      "1"
-    ],
-    "jansScr": [
-      %(person_authentication_uafexternalauthenticator)s
-    ],
-    "jansScrTyp": [
-      "person_authentication"
-    ],
-    "objectClass": [
-      "top",
-      "jansCustomScr"
-    ],
-    "jansEnabled": [
-      "false"
-    ],
-    "jansProgLng": [
-      "python"
-    ]
-  },
-  {
     "dn": "inum=6EA0-8F0D,ou=scripts,o=jans",
     "description": [
       "Sample Confirm User Registration  script"
