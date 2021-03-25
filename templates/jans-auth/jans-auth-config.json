@@ -26,13 +26,7 @@
     "deviceAuthzEndpoint":"https://%(hostname)s/jans-auth/restv1/device_authorization",
     "openidSubAttribute":"inum",
     "responseTypesSupported":[
-        ["code"],
-        ["code", "id_token"],
-        ["token"],
-        ["token", "id_token"],
-        ["code", "token"],
-        ["code", "token", "id_token"],
-        ["id_token"]
+        ["code", "id_token"]
     ],
     "responseModesSupported":[
         "query",
@@ -40,16 +34,11 @@
         "form_post"
     ],
     "grantTypesSupported":[
-        "authorization_code",
-        "implicit",
-        "password",
         "client_credentials",
-        "refresh_token",
-        "urn:ietf:params:oauth:grant-type:uma-ticket",
-        "urn:ietf:params:oauth:grant-type:device_code"
+        "authorization_code",
+        "refresh_token"
     ],
     "subjectTypesSupported":[
-        "public",
         "pairwise"
     ],
     "defaultSubjectType": "pairwise",
@@ -77,16 +66,7 @@
         "A256GCM"
     ],
     "idTokenSigningAlgValuesSupported":[
-        "none",
-        "HS256",
-        "HS384",
-        "HS512",
-        "RS256",
-        "RS384",
-        "RS512",
-        "ES256",
-        "ES384",
-        "ES512"
+        "PS256"
     ],
     "idTokenEncryptionAlgValuesSupported":[
         "RSA1_5",
@@ -101,16 +81,8 @@
         "A256GCM"
     ],
     "requestObjectSigningAlgValuesSupported":[
-        "none",
         "HS256",
-        "HS384",
-        "HS512",
-        "RS256",
-        "RS384",
-        "RS512",
-        "ES256",
-        "ES384",
-        "ES512"
+        "RS256"
     ],
     "jwksAlgorithmsSupported":[
         "RS256",
@@ -146,21 +118,12 @@
         "self_signed_tls_client_auth"
     ],
     "tokenEndpointAuthSigningAlgValuesSupported":[
-        "HS256",
-        "HS384",
-        "HS512",
-        "RS256",
-        "RS384",
-        "RS512",
-        "ES256",
-        "ES384",
-        "ES512"
+        "PS256"
     ],
     "dynamicRegistrationCustomAttributes":[
     ],
     "displayValuesSupported":[
-        "page",
-        "popup"
+        "page"
     ],
     "claimTypesSupported":[
         "normal"
