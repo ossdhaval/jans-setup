@@ -191,12 +191,9 @@ class Config:
         
         self.jans_python_readme = os.path.join(self.jansOptPythonFolder, 'libs/python.txt')
         self.jansRDBMProperties = os.path.join(self.configFolder, 'jans-sql.properties')
-        
-        self.ldif_base = os.path.join(self.outputFolder, 'base.ldif')
+
         self.ldif_attributes = os.path.join(self.outputFolder, 'attributes.ldif')
         self.ldif_scopes = os.path.join(self.outputFolder, 'scopes.ldif')
-
-        self.ldif_metric = os.path.join(self.staticFolder, 'metric/o_metric.ldif')
         self.ldif_configuration = os.path.join(self.outputFolder, 'configuration.ldif')
 
         self.system_profile_update_systemd = os.path.join(self.outputFolder, 'system_profile_systemd')
@@ -208,17 +205,9 @@ class Config:
 
         self.post_messages = []
 
-        self.ldif_files = [self.ldif_base,
-                           self.ldif_attributes,
-                           self.ldif_scopes,
-                           self.ldif_metric,
-                           self.ldif_configuration,
-                           ]
-
         self.ce_templates = {
                              self.jans_python_readme: True,
                              self.etc_hostname: False,
-                             self.ldif_base: False,
                              self.ldif_attributes: False,
                              self.ldif_scopes: False,
                              self.network: False,

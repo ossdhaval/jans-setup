@@ -260,23 +260,12 @@ class RDBMInstaller(BaseInstaller, SetupUtils):
 
     def import_ldif(self):
         ldif_files = [
-                        Config.ldif_base, 
                         Config.ldif_attributes,
                         Config.ldif_scopes,
                         Config.ldif_configuration,
-                        Config.ldif_metric,
-                    ]
-
-        if Config.ldif_metric in ldif_files:
-            ldif_files.remove(Config.ldif_metric)
+                     ]
 
         Config.pbar.progress(self.service_name, "Importing ldif files to {}".format(Config.rdbm_type), False)
-        if not Config.ldif_base in ldif_files:
-            if Config.rdbm_type == 'mysql':
-                force = BackendTypes.MYSQL
-            elif Config.rdbm_type == 'pgsql':
-                force = BackendTypes.PGSQL
-            self.dbUtils.import_ldif([Config.ldif_base], force=force)
 
         self.dbUtils.import_ldif(ldif_files)
 
