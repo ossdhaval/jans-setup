@@ -1,4 +1,6 @@
 {
+  "shared": {
+  }
   "mysql": {
     "jansPerson": {
       "fields": [],
