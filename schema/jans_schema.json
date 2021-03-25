@@ -3594,7 +3594,8 @@
       "sup": [
         "top"
       ],
-      "x_origin": "Jans created objectclass"
+      "x_origin": "Jans created objectclass",
+      "sql": {"ignore": true}
     },
     {
       "kind": "STRUCTURAL",
@@ -3615,7 +3616,8 @@
       "sup": [
         "top"
       ],
-      "x_origin": "Jans created objectclass"
+      "x_origin": "Jans created objectclass",
+      "sql": {"ignore": true}
     },
     {
       "kind": "STRUCTURAL",
@@ -3680,7 +3682,8 @@
       "sup": [
         "top"
       ],
-      "x_origin": "Jans created objectclass"
+      "x_origin": "Jans created objectclass",
+      "sql": {"ignore": true}
     },
     {
       "kind": "STRUCTURAL",
@@ -3704,7 +3707,8 @@
       "sup": [
         "top"
       ],
-      "x_origin": "Jans created objectclass"
+      "x_origin": "Jans created objectclass",
+      "sql": {"ignore": true}
     },
     {
       "kind": "STRUCTURAL",
@@ -3839,7 +3843,8 @@
       "sup": [
         "top"
       ],
-      "x_origin": "Jans created objectclass"
+      "x_origin": "Jans created objectclass",
+      "sql": {"ignore": true}
     },
     {
       "kind": "STRUCTURAL",
@@ -3867,7 +3872,8 @@
       "sup": [
         "top"
       ],
-      "x_origin": "Jans created objectclass"
+      "x_origin": "Jans created objectclass",
+      "sql": {"ignore": true}
     },
     {
       "kind": "STRUCTURAL",
