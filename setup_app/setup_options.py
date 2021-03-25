@@ -67,9 +67,6 @@ def get_setup_options():
     if base.argsp.jans_max_mem:
         setupOptions['jans_max_mem'] = base.argsp.jans_max_mem
 
-    if base.argsp.admin_password:
-        setupOptions['admin_password'] = base.argsp.admin_password
-
     setupOptions['noPrompt'] = base.argsp.n
 
     if base.argsp.no_httpd:

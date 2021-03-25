@@ -80,9 +80,6 @@ class PropertiesUtils(SetupUtils):
                 tld = Config.hostname
             Config.admin_email = "support@%s" % tld
 
-        if not Config.admin_password:
-            Config.admin_password = self.getPW()
-
         if not Config.encode_salt:
             Config.encode_salt = self.getPW() + self.getPW()
 
@@ -94,23 +91,34 @@ class PropertiesUtils(SetupUtils):
             Config.rdbm_type = self.getPrompt("RDBM Type", Config.rdbm_type)
             if Config.rdbm_type in ('mysql', 'pgsql'):
                 break
-            print("Please enter mysql ot pgsql")
-        
-        while True:
-            Config.rdbm_host = self.getPrompt("    {} host".format(Config.rdbm_type.upper()), Config.rdbm_host)
-            Config.rdbm_port = self.getPrompt("    {} port".format(Config.rdbm_type.upper()), Config.rdbm_port)
-            Config.rdbm_db = self.getPrompt("    Jnas Database", Config.rdbm_db)
-            Config.rdbm_user = self.getPrompt("    Jans Database Username", Config.rdbm_user)
-            Config.rdbm_password = self.getPrompt("    Jans Database Password", Config.rdbm_password)
+            print("Please enter mysql or pgsql")
 
-            result = dbUtils.sqlconnection()
 
-            if result[0]:
-                print("    {}Successfully connected to {} server{}".format(colors.OKGREEN, Config.rdbm_type.upper(), colors.ENDC))
-                break
-            else:
-                print("    {}Can't connect to {} server with provided credidentals.{}".format(colors.FAIL, Config.rdbm_type.upper(), colors.ENDC))
-                print("    ERROR:", result[1])
+        remote_local = input("Use remote RDBM [Y|n] : ")
+
+        if remote_local.lower().startswith('n'):
+            Config.rdbm_install_type = InstallTypes.LOCAL
+            if not Config.rdbm_password:
+                Config.rdbm_password = self.getPW()
+        else:
+            Config.rdbm_install_type = InstallTypes.REMOTE
+
+        if Config.rdbm_install_type == InstallTypes.REMOTE:
+            while True:
+                Config.rdbm_host = self.getPrompt("    {} host".format(Config.rdbm_type.upper()), Config.rdbm_host)
+                Config.rdbm_port = self.getPrompt("    {} port".format(Config.rdbm_type.upper()), Config.rdbm_port)
+                Config.rdbm_db = self.getPrompt("    Jnas Database", Config.rdbm_db)
+                Config.rdbm_user = self.getPrompt("    Jans Database Username", Config.rdbm_user)
+                Config.rdbm_password = self.getPrompt("    Jans Database Password", Config.rdbm_password)
+
+                result = dbUtils.sqlconnection()
+
+                if result[0]:
+                    print("    {}Successfully connected to {} server{}".format(colors.OKGREEN, Config.rdbm_type.upper(), colors.ENDC))
+                    break
+                else:
+                    print("    {}Can't connect to {} server with provided credidentals.{}".format(colors.FAIL, Config.rdbm_type.upper(), colors.ENDC))
+                    print("    ERROR:", result[1])
 
 
     def promptForProperties(self):
@@ -168,17 +176,6 @@ class PropertiesUtils(SetupUtils):
                     print("Please enter valid email address")
             
             Config.jans_max_mem = self.getPrompt("Enter maximum RAM for applications in MB", str(Config.jans_max_mem))
-
-            admin_password = Config.admin_password if Config.admin_password else self.getPW(special='.*=!%&+/-')
-
-            while True:
-                adminPass = self.getPrompt("Enter Password for Admin User")
-                if len(adminPass) > 3:
-                    break
-                else:
-                    print("Admin password should be at least four characters in length.")
-
-            Config.admin_password = adminPass
 
             self.prompt_for_rdbm()
 

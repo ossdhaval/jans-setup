@@ -308,8 +308,6 @@ class SetupUtils(Crypto64):
         else:
             ndigit = random.randint(1, 3)
             nspecial = random.randint(1, 2)
-
-
             ncletter = random.randint(2, 5)
             nsletter = size - ndigit - nspecial - ncletter
             
@@ -318,11 +316,11 @@ class SetupUtils(Crypto64):
             for n, rc in ((ndigit, string.digits), (nspecial, special),
                         (ncletter, string.ascii_uppercase),
                         (nsletter, string.ascii_lowercase)):
-            
+
                 random_password += [random.choice(rc) for _ in range(n)]
-            
+
         random.shuffle(random_password)
-                
+
         return ''.join(random_password)
 
     def isIP(self, address):

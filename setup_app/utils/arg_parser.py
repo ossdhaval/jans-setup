@@ -29,7 +29,6 @@ def arg_parser():
     parser.add_argument('-city', help="City field used for generating X.509 certificates")
     parser.add_argument('-state', help="State field used for generating X.509 certificates")
     parser.add_argument('-country', help="Two letters country coude used for generating X.509 certificates")
-    parser.add_argument('-admin-password', help="Used as the Administrator password")
     parser.add_argument('-jans-max-mem', help="Total memory (in KB) to be used by Jannses Server")
 
     parser.add_argument('--shell', help="Drop into interactive shell before starting installation", action='store_true')

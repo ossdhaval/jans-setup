@@ -54,8 +54,6 @@ class msg:
     cert_info_label = "Information to Generate Certificates"
     sys_info_label =  "System Information"
     application_max_ram_label = "Maximum RAM in MB"
-    oxtrust_admin_password_label = "oxTrust Admin Password"
-    oxtrust_admin_password_warning = "oxTrust Admin Password should be at least six characters"
     max_ram_int_warning = "Please enter and integer value for Max ram"
     memory_warning = "WARINIG: You don't have enough memory to run Janssen CE properly with selected applications. Continue anyway?"
 

@@ -35,8 +35,7 @@ class JansAuthInstaller(JettyInstaller):
         self.oxauth_error_json = os.path.join(self.templates_folder, 'jans-auth-errors.json')
         self.oxauth_openid_jwks_fn = os.path.join(self.output_folder, 'jans-auth-keys.json')
         self.oxauth_openid_jks_fn = os.path.join(Config.certFolder, 'jans-auth-keys.jks')
-        self.ldif_people = os.path.join(self.output_folder, 'people.ldif')
-        self.ldif_groups = os.path.join(self.output_folder, 'groups.ldif')
+
 
     def install(self):
         self.logIt("Copying auth.war into jetty webapps folder...")
@@ -54,10 +53,6 @@ class JansAuthInstaller(JettyInstaller):
         if not Config.get('admin_inum'):
             Config.admin_inum = str(uuid.uuid4())
 
-
-        Config.encoded_admin_password = self.ldap_encode(Config.admin_password)
-
-
         self.check_clients([('oxauth_client_id', '1001.')])
         
         if not Config.get('oxauthClient_pw'):
@@ -72,7 +67,7 @@ class JansAuthInstaller(JettyInstaller):
 
     def render_import_templates(self):
 
-        for tmp in (self.oxauth_config_json, self.ldif_people, self.ldif_groups):
+        for tmp in (self.oxauth_config_json,):
             self.renderTemplateInOut(tmp, self.templates_folder, self.output_folder)
 
         Config.templateRenderingDict['oxauth_config_base64'] = self.generate_base64_ldap_file(self.oxauth_config_json)
@@ -85,7 +80,7 @@ class JansAuthInstaller(JettyInstaller):
         self.renderTemplateInOut(self.ldif_config, self.templates_folder, self.output_folder)
         self.renderTemplateInOut(self.ldif_clients, self.templates_folder, self.output_folder)
 
-        self.dbUtils.import_ldif([self.ldif_config, self.ldif_clients, self.ldif_scripts, self.ldif_people, self.ldif_groups])
+        self.dbUtils.import_ldif([self.ldif_config, self.ldif_clients, self.ldif_scripts])
 
 
     def install_oxauth_rp(self):

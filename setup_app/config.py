@@ -109,10 +109,6 @@ class Config:
         # Component ithversions
         self.apache_version = None
 
-        #passwords
-        self.admin_password = None
-        self.admin_password = ''
-
         #DB installation types
         self.rdbm_install = InstallTypes.LOCAL
 
@@ -121,11 +117,10 @@ class Config:
         self.rdbm_type = 'mysql'
         self.rdbm_host = 'localhost'
         self.rdbm_port = 3306
-        self.rdbm_db = 'jans'
-        self.rdbm_user = None
+        self.rdbm_db = 'jansdb'
+        self.rdbm_user = 'jans'
         self.rdbm_password = None
         self.static_rdbm_dir = os.path.join(self.install_dir, 'static/rdbm')
-
 
         # Jans components installation status
         self.loadData = True
