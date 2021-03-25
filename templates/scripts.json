@@ -1,42 +1,5 @@
 [
   {
-    "dn": "inum=6EA0-8F0D,ou=scripts,o=jans",
-    "description": [
-      "Sample Confirm User Registration  script"
-    ],
-    "displayName": [
-      "user_confirm_registration"
-    ],
-    "inum": [
-      "6EA0-8F0D"
-    ],
-    "jansLevel": [
-      "100"
-    ],
-    "jansModuleProperty": [
-      "{\"value1\":\"location_type\",\"value2\":\"ldap\",\"description\":\"\"}"
-    ],
-    "jansRevision": [
-      "1"
-    ],
-    "jansScr": [
-      %(user_registration_confirmregistrationsamplescript)s
-    ],
-    "jansScrTyp": [
-      "user_registration"
-    ],
-    "objectClass": [
-      "top",
-      "jansCustomScr"
-    ],
-    "jansEnabled": [
-      "false"
-    ],
-    "jansProgLng": [
-      "python"
-    ]
-  },
-  {
     "dn": "inum=A51E-76DA,ou=scripts,o=jans",
     "description": [
       "Sample authentication module"
