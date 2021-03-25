@@ -82,22 +82,6 @@ class JansAuthInstaller(JettyInstaller):
 
         self.dbUtils.import_ldif([self.ldif_config, self.ldif_clients, self.ldif_scripts])
 
-
-    def install_oxauth_rp(self):
-        self.download_files(downloads=[self.source_files[1][0]])
-
-        Config.pbar.progress(self.service_name, "Installing OxAuthRP", False)
-
-        self.logIt("Copying jans-auth-rp.war into jetty webapps folder...")
-
-        jettyServiceName = 'jans-auth-rp'
-        self.installJettyService(self.jetty_app_configuration[jettyServiceName])
-
-        jettyServiceWebapps = os.path.join(self.jetty_base, jettyServiceName, 'webapps')
-        self.copyFile(self.source_files[1][0], jettyServiceWebapps)
-
-        self.enable('jans-auth-rp')
-
     def genRandomString(self, N):
         return ''.join(random.SystemRandom().choice(string.ascii_lowercase
                                                     + string.ascii_uppercase
@@ -108,17 +92,5 @@ class JansAuthInstaller(JettyInstaller):
         if not Config.get('pairwiseCalculationSalt') or enforce:
             Config.pairwiseCalculationSalt = self.genRandomString(random.randint(20,30))
 
-    def copy_static(self):
-        self.copyFile(
-                os.path.join(Config.install_dir, 'static/auth/lib/duo_web.py'),
-                os.path.join(Config.jansOptPythonFolder, 'libs' )
-            )
-        
-        for conf_fn in ('duo_creds.json', 'gplus_client_secrets.json', 'super_gluu_creds.json',
-                        'vericloud_jans_creds.json', 'cert_creds.json', 'otp_configuration.json'):
-            
-            src_fn = os.path.join(Config.install_dir, 'static/auth/conf', conf_fn)
-            self.copyFile(src_fn, Config.certFolder)
-    
     def installed(self):
         return os.path.exists(os.path.join(Config.jetty_base, self.service_name, 'start.ini'))
