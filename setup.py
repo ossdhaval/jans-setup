@@ -191,9 +191,8 @@ def do_installation():
 
             jansInstaller.copy_scripts()
 
-            jansInstaller.prepare_base64_extension_scripts()
+            jansInstaller.prepare_extension_scripts()
             jansInstaller.render_templates()
-            jansInstaller.render_configuration_template()
 
             jansInstaller.copy_output()
             jansInstaller.setup_init_scripts()

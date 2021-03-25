@@ -101,7 +101,7 @@ class Crypto64:
                   "-file", public_certificate, "-keystore", truststore_fn, \
                   "-storepass", "changeit", "-noprompt"])
 
-    def prepare_base64_extension_scripts(self, extensions=[]):
+    def prepare_extension_scripts(self, extensions=[]):
         self.logIt("Preparing scripts")
         try:
             if not os.path.exists(Config.extensionFolder):
@@ -120,30 +120,13 @@ class Crypto64:
 
                     if (False if extensions and not extensionScriptName in extensions else True):
                         # Prepare key for dictionary
-                        base64ScriptFile = self.generate_base64_file(scriptFilePath, 1)
-                        Config.templateRenderingDict[extensionScriptName] = base64ScriptFile
+                        
+                        with open(scriptFilePath) as reader:
+                            Config.templateRenderingDict[extensionScriptName] = json.dumps(reader.read())
                         self.logIt("Loaded script %s with type %s into %s" % (scriptFile, extensionType, extensionScriptName))
 
         except:
             self.logIt("Error loading scripts from %s" % Config.extensionFolder, True)
-
-
-    def generate_base64_file(self, fn, num_spaces):
-        self.logIt('Loading file %s' % fn)
-        plain_file_b64encoded_text = None
-        try:
-            plain_file_text = self.readFile(fn, rmode='rb')
-            plain_file_b64encoded_text = base64.b64encode(plain_file_text).decode('utf-8').strip()
-        except:
-            self.logIt("Error loading file", True)
-
-        if num_spaces > 0:
-            plain_file_b64encoded_text = self.reindent(plain_file_b64encoded_text, num_spaces)
-
-        return plain_file_b64encoded_text
-
-    def generate_base64_ldap_file(self, fn):
-        return self.generate_base64_file(fn, 1)
 
     def gen_keystore(self, suffix, keystoreFN, keystorePW, inKey, inCert):
 
@@ -291,16 +274,4 @@ class Crypto64:
         except:
             self.logIt("Error writing command : %s" % fn, True)
 
-
-    def generate_base64_string(self, lines, num_spaces):
-        if not lines:
-            return None
-
-        plain_text = ''.join(lines)
-        plain_b64encoded_text = base64.encodestring(plain_text.encode('utf-8')).decode('utf-8').strip()
-
-        if num_spaces > 0:
-            plain_b64encoded_text = self.reindent(plain_b64encoded_text, num_spaces)
-
-        return plain_b64encoded_text
 

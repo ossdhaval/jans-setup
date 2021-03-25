@@ -3,6 +3,7 @@ import glob
 import random
 import string
 import uuid
+import json
 
 from setup_app import paths
 from setup_app.utils import base
@@ -28,8 +29,9 @@ class JansAuthInstaller(JettyInstaller):
         self.templates_folder = os.path.join(Config.templateFolder, self.service_name)
         self.output_folder = os.path.join(Config.outputFolder, self.service_name)
 
-        self.ldif_config = os.path.join(self.output_folder, 'configuration.ldif')
-        self.ldif_clients = os.path.join(self.output_folder, 'clients.ldif')
+        self.json_scripts = os.path.join(Config.outputFolder, 'scripts.json')
+        self.json_config = os.path.join(self.output_folder, 'configuration.json')
+        self.json_clients = os.path.join(self.output_folder, 'clients.json')
         self.oxauth_config_json = os.path.join(self.output_folder, 'jans-auth-config.json')
         self.oxauth_static_conf_json = os.path.join(self.templates_folder, 'jans-auth-static-conf.json')
         self.oxauth_error_json = os.path.join(self.templates_folder, 'jans-auth-errors.json')
@@ -70,17 +72,17 @@ class JansAuthInstaller(JettyInstaller):
         for tmp in (self.oxauth_config_json,):
             self.renderTemplateInOut(tmp, self.templates_folder, self.output_folder)
 
-        Config.templateRenderingDict['oxauth_config_base64'] = self.generate_base64_ldap_file(self.oxauth_config_json)
-        Config.templateRenderingDict['oxauth_static_conf_base64'] = self.generate_base64_ldap_file(self.oxauth_static_conf_json)
-        Config.templateRenderingDict['oxauth_error_base64'] = self.generate_base64_ldap_file(self.oxauth_error_json)
-        Config.templateRenderingDict['oxauth_openid_key_base64'] = self.generate_base64_ldap_file(self.oxauth_openid_jwks_fn)
+        Config.templateRenderingDict['oxauth_config'] = json.dumps(self.readFile(self.oxauth_config_json))
+        Config.templateRenderingDict['oxauth_static_conf'] = json.dumps(self.readFile(self.oxauth_static_conf_json))
+        Config.templateRenderingDict['oxauth_error'] = json.dumps(self.readFile(self.oxauth_error_json))
+        Config.templateRenderingDict['oxauth_openid_key'] = json.dumps(self.readFile(self.oxauth_openid_jwks_fn))
 
-        self.ldif_scripts = os.path.join(Config.outputFolder, 'scripts.ldif')
-        self.renderTemplateInOut(self.ldif_scripts, Config.templateFolder, Config.outputFolder)
-        self.renderTemplateInOut(self.ldif_config, self.templates_folder, self.output_folder)
-        self.renderTemplateInOut(self.ldif_clients, self.templates_folder, self.output_folder)
 
-        self.dbUtils.import_ldif([self.ldif_config, self.ldif_clients, self.ldif_scripts])
+        self.renderTemplateInOut(self.json_scripts, Config.templateFolder, Config.outputFolder)
+        self.renderTemplateInOut(self.json_config, self.templates_folder, self.output_folder)
+        self.renderTemplateInOut(self.json_clients, self.templates_folder, self.output_folder)
+
+        self.dbUtils.import_templates([self.json_config, self.json_clients, self.json_scripts])
 
 
     def install_oxauth_rp(self):

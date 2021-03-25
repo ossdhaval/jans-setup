@@ -165,22 +165,6 @@ class JansInstaller(BaseInstaller, SetupUtils):
                 self.logIt("Error writing template %s" % fullPath, True)
 
 
-    def render_configuration_template(self):
-        self.logIt("Rendering configuration templates")
-
-        try:
-            self.renderTemplate(Config.ldif_configuration)
-        except:
-            self.logIt("Error writing template", True)
-
-
-    def render_test_templates(self):
-        self.logIt("Rendering test templates")
-
-        testTepmplatesFolder = os.path.join(self.templateFolder, 'test')
-        self.render_templates_folder(testTepmplatesFolder)
-
-
     def setup_init_scripts(self):
         self.logIt("Setting up init scripts")
         if base.os_initdaemon == 'initd':

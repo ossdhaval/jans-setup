@@ -298,3 +298,10 @@ def download(url, dst):
     result = urlretrieve(url, dst)
     f_size = result[1].get('Content-Length','0')
     logIt("Download size: {} bytes".format(f_size))
+
+
+def parse_dn(dn):
+    elements = []
+    for item in dn.split(','):
+        elements.append(item.split('='))
+    return elements

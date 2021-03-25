@@ -5,9 +5,7 @@ import re
 import json
 import logging
 import copy
-import ldap3
 import pymysql
-from ldap3.utils import dn as dnutils
 from pathlib import PurePath
 
 warnings.filterwarnings("ignore")
@@ -16,12 +14,10 @@ from setup_app import static
 from setup_app.config import Config
 from setup_app.static import InstallTypes, BackendTypes, colors
 from setup_app.utils import base
-from setup_app.utils import ldif_utils
 from setup_app.utils.attributes import attribDataTypes
 
 my_path = PurePath(os.path.dirname(os.path.realpath(__file__)))
 sys.path.append(my_path.parent.joinpath('pylib/sqlalchemy'))
-
 
 import sqlalchemy
 import sqlalchemy.orm
@@ -114,7 +110,7 @@ class DBUtils:
 
     def get_oxAuthConfDynamic(self):
 
-        result = self.search(search_base='ou=jans-auth,ou=configuration,o=jans', search_filter='(objectClass=jansAppConf)', search_scope=ldap3.BASE)
+        result = self.search(search_base='ou=jans-auth,ou=configuration,o=jans', search_filter='(objectClass=jansAppConf)')
         dn = result['dn'] 
         oxAuthConfDynamic = json.loads(result['jansConfDyn'])
 
@@ -166,7 +162,7 @@ class DBUtils:
         sqlalchemy_table = self.Base.classes[table].__table__
         return self.session.query(sqlalchemy_table).filter(sqlalchemy_table).filter(sqlalchemy_table.columns.dn == dn).first()
 
-    def search(self, search_base, search_filter='(objectClass=*)', search_scope=ldap3.LEVEL, fetchmany=False):
+    def search(self, search_base, search_filter='(objectClass=*)', fetchmany=False):
         base.logIt("Searching database for dn {} with filter {}".format(search_base, search_filter))
 
         if self.Base is None:
@@ -261,7 +257,7 @@ class DBUtils:
             return opendj_syntax
 
     def get_rootdn(self, dn):
-        dn_parsed = dnutils.parse_dn(dn)
+        dn_parsed = base.parse_dn(dn)
         dn_parsed.pop(0)
         dnl=[]
 
@@ -316,7 +312,9 @@ class DBUtils:
         return data_type
 
     def get_rdbm_val(self, key, val):
-        
+        if key == 'dn':
+            return val
+
         data_type = self.get_attr_sql_data_type(key)
 
         if data_type in ('SMALLINT',):
@@ -341,18 +339,17 @@ class DBUtils:
         return val[0]
 
 
-    def import_ldif(self, ldif_files, bucket=None, force=None):
+    def import_templates(self, templates):
 
-        base.logIt("Importing ldif file(s): {} ".format(', '.join(ldif_files)))
+        base.logIt("Importing templates file(s): {} ".format(', '.join(templates)))
 
         sql_data_fn = os.path.join(Config.outputFolder, Config.rdbm_type, 'jans_data.sql')
 
-        for ldif_fn in ldif_files:
-            base.logIt("Importing entries from " + ldif_fn)
-            parser = ldif_utils.myLdifParser(ldif_fn)
-            parser.parse()
-
-            for dn, entry in parser.entries:
+        for template in templates:
+            base.logIt("Importing entries from " + template)
+            entries = base.readJsonFile(template)
+            for entry in entries:
+                dn = entry['dn']
                 if self.Base is None:
                     self.rdm_automapper()
 
@@ -390,7 +387,7 @@ class DBUtils:
 
                 else:
                     vals = {}
-                    dn_parsed = dnutils.parse_dn(dn)
+                    dn_parsed = base.parse_dn(dn)
                     rdn_name = dn_parsed[0][0]
                     objectClass = entry.get('objectClass') or entry.get('objectclass')
 
@@ -402,7 +399,6 @@ class DBUtils:
                         objectClass = objectClass[-1]
 
                     vals['doc_id'] = dn_parsed[0][1]
-                    vals['dn'] = dn
                     vals['objectClass'] = objectClass
 
                     #entry.pop(rdn_name)

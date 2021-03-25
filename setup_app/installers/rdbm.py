@@ -39,7 +39,7 @@ class RDBMInstaller(BaseInstaller, SetupUtils):
             jans_schema_files.append(os.path.join(Config.install_dir, 'schema', jans_schema_fn))
 
         self.create_tables(jans_schema_files)
-        self.import_ldif()
+        self.import_app_templates()
         self.create_indexes()
         self.rdbmProperties()
 
@@ -258,16 +258,18 @@ class RDBMInstaller(BaseInstaller, SetupUtils):
 
                 self.dbUtils.exec_rdbm_query(sql_cmd)
 
-    def import_ldif(self):
-        ldif_files = [
-                        Config.ldif_attributes,
-                        Config.ldif_scopes,
-                        Config.ldif_configuration,
+    def import_app_templates(self):
+        templates = [
+                        os.path.join(self.output_dir, 'attributes.json'),
+                        os.path.join(self.output_dir, 'scopes.json'),
+                        os.path.join(self.output_dir, 'configuration.json'),
                      ]
+        for template in templates:
+            self.renderTemplateInOut(template, Config.templateFolder, self.output_dir)
 
-        Config.pbar.progress(self.service_name, "Importing ldif files to {}".format(Config.rdbm_type), False)
+        Config.pbar.progress(self.service_name, "Importing templates to {}".format(Config.rdbm_type), False)
 
-        self.dbUtils.import_ldif(ldif_files)
+        self.dbUtils.import_templates(templates)
 
     def server_time_zone(self):
         my_time_zone = str(datetime.datetime.now(datetime.timezone(datetime.timedelta(0))).astimezone().tzinfo)
