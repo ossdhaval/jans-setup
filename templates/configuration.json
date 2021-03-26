@@ -17,7 +17,7 @@
       "false"
     ],
     "jansAuthMode": [
-      "simple_password_auth"
+      "urn:openbanking:psd2:sca"
     ],
     "objectClass": [
       "top",
