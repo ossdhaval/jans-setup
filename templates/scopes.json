@@ -1,6 +1,5 @@
 [
   {
-    "dn": "inum=F0C4,ou=scopes,o=jans",
     "description": [
       "Authenticate using OpenID Connect."
     ],
@@ -25,287 +24,18 @@
     "objectClass": [
       "top",
       "jansScope"
-    ]
+    ],
+    "dn": "inum=F0C4,ou=scopes,o=jans"
   },
   {
-    "dn": "inum=43F1,ou=scopes,o=jans",
     "description": [
-      "View your basic profile info."
+      "Accounts."
     ],
     "displayName": [
-      "view_profile"
+      "accounts"
     ],
     "inum": [
-      "43F1"
-    ],
-    "jansAttrs": [
-      "{\"spontaneousClientId\":\"\",\"spontaneousClientScopes\":[],\"showInConfigurationEndpoint\":true}"
-    ],
-    "jansClaim": [
-      "inum=2B29,ou=attributes,o=jans",
-      "inum=0C85,ou=attributes,o=jans",
-      "inum=B4B0,ou=attributes,o=jans",
-      "inum=A0E8,ou=attributes,o=jans",
-      "inum=5EC6,ou=attributes,o=jans",
-      "inum=B52A,ou=attributes,o=jans",
-      "inum=64A0,ou=attributes,o=jans",
-      "inum=EC3A,ou=attributes,o=jans",
-      "inum=3B47,ou=attributes,o=jans",
-      "inum=3692,ou=attributes,o=jans",
-      "inum=98FC,ou=attributes,o=jans",
-      "inum=A901,ou=attributes,o=jans",
-      "inum=36D9,ou=attributes,o=jans",
-      "inum=BE64,ou=attributes,o=jans",
-      "inum=6493,ou=attributes,o=jans"
-    ],
-    "jansDefScope": [
-      "false"
-    ],
-    "jansId": [
-      "profile"
-    ],
-    "jansScopeTyp": [
-      "openid"
-    ],
-    "objectClass": [
-      "top",
-      "jansScope"
-    ]
-  },
-  {
-    "dn": "inum=764C,ou=scopes,o=jans",
-    "description": [
-      "View your email address."
-    ],
-    "displayName": [
-      "view_email_address"
-    ],
-    "inum": [
-      "764C"
-    ],
-    "jansAttrs": [
-      "{\"spontaneousClientId\":\"\",\"spontaneousClientScopes\":[],\"showInConfigurationEndpoint\":true}"
-    ],
-    "jansClaim": [
-      "inum=8F88,ou=attributes,o=jans",
-      "inum=CAE3,ou=attributes,o=jans"
-    ],
-    "jansDefScope": [
-      "false"
-    ],
-    "jansId": [
-      "email"
-    ],
-    "jansScopeTyp": [
-      "openid"
-    ],
-    "objectClass": [
-      "top",
-      "jansScope"
-    ]
-  },
-  {
-    "dn": "inum=C17A,ou=scopes,o=jans",
-    "description": [
-      "View your address."
-    ],
-    "displayName": [
-      "view_address"
-    ],
-    "inum": [
-      "C17A"
-    ],
-    "jansAttrs": [
-      "{\"spontaneousClientId\":\"\",\"spontaneousClientScopes\":[],\"showInConfigurationEndpoint\":true}"
-    ],
-    "jansClaim": [
-      "inum=27DB,ou=attributes,o=jans",
-      "inum=2A3D,ou=attributes,o=jans",
-      "inum=6609,ou=attributes,o=jans",
-      "inum=6EEB,ou=attributes,o=jans",
-      "inum=BCE8,ou=attributes,o=jans",
-      "inum=D90B,ou=attributes,o=jans",
-      "inum=E6B8,ou=attributes,o=jans",
-      "inum=E999,ou=attributes,o=jans"
-    ],
-    "jansDefScope": [
-      "false"
-    ],
-    "jansGrpClaims": [
-      "true"
-    ],
-    "jansId": [
-      "address"
-    ],
-    "jansScopeTyp": [
-      "openid"
-    ],
-    "objectClass": [
-      "top",
-      "jansScope"
-    ]
-  },
-  {
-    "dn": "inum=D491,ou=scopes,o=jans",
-    "description": [
-      "View your phone number."
-    ],
-    "displayName": [
-      "view_phone_number"
-    ],
-    "inum": [
-      "D491"
-    ],
-    "jansAttrs": [
-      "{\"spontaneousClientId\":\"\",\"spontaneousClientScopes\":[],\"showInConfigurationEndpoint\":true}"
-    ],
-    "jansClaim": [
-      "inum=B17A,ou=attributes,o=jans",
-      "inum=0C18,ou=attributes,o=jans"
-    ],
-    "jansDefScope": [
-      "false"
-    ],
-    "jansId": [
-      "phone"
-    ],
-    "jansScopeTyp": [
-      "openid"
-    ],
-    "objectClass": [
-      "top",
-      "jansScope"
-    ]
-  },
-  {
-    "dn": "inum=341A,ou=scopes,o=jans",
-    "description": [
-      "View the client info."
-    ],
-    "displayName": [
-      "view_client"
-    ],
-    "inum": [
-      "341A"
-    ],
-    "jansAttrs": [
-      "{\"spontaneousClientId\":\"\",\"spontaneousClientScopes\":[],\"showInConfigurationEndpoint\":true}"
-    ],
-    "jansClaim": [
-      "inum=2B29,ou=attributes,o=jans",
-      "inum=29DA,ou=attributes,o=jans"
-    ],
-    "jansDefScope": [
-      "false"
-    ],
-    "jansId": [
-      "clientinfo"
-    ],
-    "jansScopeTyp": [
-      "openid"
-    ],
-    "objectClass": [
-      "top",
-      "jansScope"
-    ]
-  },
-  {
-    "dn": "inum=10B2,ou=scopes,o=jans",
-    "description": [
-      "View your local username in the Janssen Server."
-    ],
-    "displayName": [
-      "view_username"
-    ],
-    "inum": [
-      "10B2"
-    ],
-    "jansAttrs": [
-      "{\"spontaneousClientId\":\"\",\"spontaneousClientScopes\":[],\"showInConfigurationEndpoint\":true}"
-    ],
-    "jansClaim": [
-      "inum=42E0,ou=attributes,o=jans"
-    ],
-    "jansDefScope": [
-      "false"
-    ],
-    "jansId": [
-      "user_name"
-    ],
-    "jansScopeTyp": [
-      "openid"
-    ],
-    "objectClass": [
-      "top",
-      "jansScope"
-    ]
-  },
-  {
-    "dn": "inum=6D99,ou=scopes,o=jans",
-    "description": [
-      "Obtain UMA PAT."
-    ],
-    "displayName": [
-      "UMA Protection"
-    ],
-    "inum": [
-      "6D99"
-    ],
-    "jansAttrs": [
-      "{\"spontaneousClientId\":\"\",\"spontaneousClientScopes\":[],\"showInConfigurationEndpoint\":true}"
-    ],
-    "jansDefScope": [
-      "true"
-    ],
-    "jansId": [
-      "uma_protection"
-    ],
-    "jansScopeTyp": [
-      "openid"
-    ],
-    "objectClass": [
-      "top",
-      "jansScope"
-    ]
-  },
-  {
-    "dn": "inum=6D90,ou=scopes,o=jans",
-    "description": [
-      "oxd scope which is required to call oxd API"
-    ],
-    "displayName": [
-      "oxd"
-    ],
-    "inum": [
-      "6D90"
-    ],
-    "jansAttrs": [
-      "{\"spontaneousClientId\":\"\",\"spontaneousClientScopes\":[],\"showInConfigurationEndpoint\":true}"
-    ],
-    "jansDefScope": [
-      "true"
-    ],
-    "jansId": [
-      "oxd"
-    ],
-    "jansScopeTyp": [
-      "openid"
-    ],
-    "objectClass": [
-      "top",
-      "jansScope"
-    ]
-  },
-  {
-    "dn": "inum=7D90,ou=scopes,o=jans",
-    "description": [
-      "revoke_session scope which is required to be able call /revoke_session endpoint"
-    ],
-    "displayName": [
-      "revoke_session"
-    ],
-    "inum": [
-      "7D90"
+      "53F1"
     ],
     "jansAttrs": [
       "{\"spontaneousClientId\":\"\",\"spontaneousClientScopes\":[],\"showInConfigurationEndpoint\":true}"
@@ -314,7 +44,7 @@
       "false"
     ],
     "jansId": [
-      "revoke_session"
+      "accounts"
     ],
     "jansScopeTyp": [
       "openid"
@@ -322,30 +52,27 @@
     "objectClass": [
       "top",
       "jansScope"
-    ]
+    ],
+    "dn": "inum=53F1,ou=scopes,o=jans"
   },
   {
-    "dn": "inum=8A01,ou=scopes,o=jans",
     "description": [
-      "View your mobile phone number."
+      "Payments."
     ],
     "displayName": [
-      "view_mobile_phone_number"
+      "payments"
     ],
     "inum": [
-      "8A01"
+      "7371"
     ],
     "jansAttrs": [
       "{\"spontaneousClientId\":\"\",\"spontaneousClientScopes\":[],\"showInConfigurationEndpoint\":true}"
-    ],
-    "jansClaim": [
-      "inum=6DA6,ou=attributes,o=jans"
     ],
     "jansDefScope": [
       "false"
     ],
     "jansId": [
-      "mobile_phone"
+      "payments"
     ],
     "jansScopeTyp": [
       "openid"
@@ -353,58 +80,27 @@
     "objectClass": [
       "top",
       "jansScope"
-    ]
+    ],
+    "dn": "inum=7371,ou=scopes,o=jans"
   },
   {
-    "dn": "inum=C4F5,ou=scopes,o=jans",
     "description": [
-      "View your user permission and roles."
+      "Funds confirmations."
     ],
     "displayName": [
-      "view_user_permissions_roles"
+      "fundsconfirmations"
     ],
     "inum": [
-      "C4F5"
+      "9391"
     ],
     "jansAttrs": [
       "{\"spontaneousClientId\":\"\",\"spontaneousClientScopes\":[],\"showInConfigurationEndpoint\":true}"
     ],
     "jansDefScope": [
-      "true"
+      "false"
     ],
     "jansId": [
-      "permission"
-    ],
-    "jansScopeTyp": [
-      "dynamic"
-    ],
-    "jansScrDn": [
-      "inum=CB5B-3211,ou=scripts,o=jans"
-    ],
-    "objectClass": [
-      "top",
-      "jansScope"
-    ]
-  },
-  {
-    "dn": "inum=C4F6,ou=scopes,o=jans",
-    "description": [
-      "This scope value requests that an OAuth 2.0 Refresh Token be issued."
-    ],
-    "displayName": [
-      "refresh_token"
-    ],
-    "inum": [
-      "C4F6"
-    ],
-    "jansAttrs": [
-      "{\"spontaneousClientId\":\"\",\"spontaneousClientScopes\":[],\"showInConfigurationEndpoint\":true}"
-    ],
-    "jansDefScope": [
-      "true"
-    ],
-    "jansId": [
-      "offline_access"
+      "fundsconfirmations"
     ],
     "jansScopeTyp": [
       "openid"
@@ -412,6 +108,7 @@
     "objectClass": [
       "top",
       "jansScope"
-    ]
+    ],
+    "dn": "inum=9391,ou=scopes,o=jans"
   }
 ]
