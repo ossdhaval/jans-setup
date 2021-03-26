@@ -1,66 +1,49 @@
 [
   {
     "dn": "inum=%(oxauth_client_id)s,ou=clients,o=jans",
-    "displayName": [
-      "oxTrust Admin GUI"
-    ],
-    "inum": [
-      "%(oxauth_client_id)s"
-    ],
-    "jansAppTyp": [
-      "web"
-    ],
-    "jansClaimRedirectURI": [
-      "https://%(hostname)s/jans-auth/restv1/uma/gather_claims"
-    ],
-    "jansClntSecret": [
-      "%(oxauthClient_encoded_pw)s"
-    ],
-    "jansGrantTyp": [
-      "authorization_code",
-      "implicit",
-      "refresh_token"
-    ],
-    "jansIdTknSignedRespAlg": [
-      "HS256"
-    ],
-    "jansLogoutSessRequired": [
-      "true"
-    ],
-    "jansLogoutURI": [
-      "https://%(hostname)s/identity/ssologout.htm"
-    ],
-    "jansPersistClntAuthzs": [
-      "false"
-    ],
-    "jansPostLogoutRedirectURI": [
-      "https://%(hostname)s/identity/finishlogout.htm"
-    ],
-    "jansRedirectURI": [
-      "https://%(hostname)s/identity/scim/auth",
-      "https://%(hostname)s/identity/authcode.htm",
-      "https://%(hostname)s/jans-auth/restv1/uma/gather_claims?authentication=true"
-    ],
-    "jansRespTyp": [
-      "code"
-    ],
-    "jansScope": [
-      "inum=F0C4,ou=scopes,o=jans",
-      "inum=10B2,ou=scopes,o=jans",
-      "inum=764C,ou=scopes,o=jans"
-    ],
-    "jansSubjectTyp": [
-      "public"
-    ],
-    "jansTknEndpointAuthMethod": [
-      "client_secret_basic"
-    ],
-    "jansTrustedClnt": [
-      "true"
-    ],
-    "objectClass": [
-      "top",
-      "jansClnt"
-    ]
+    "displayName": "oxTrust Admin GUI",
+    "inum": "%(oxauth_client_id)s",
+    "jansAppTyp": "web",
+    "jansClaimRedirectURI": "https://%(hostname)s/jans-auth/restv1/uma/gather_claims",
+    "jansClntSecret": "%(oxauthClient_encoded_pw)s",
+    "jansGrantTyp": {
+      "v": [
+        "authorization_code",
+        "implicit",
+        "refresh_token"
+      ]
+    },
+    "jansIdTknSignedRespAlg": "HS256",
+    "jansLogoutSessRequired": 1,
+    "jansLogoutURI": "https://%(hostname)s/identity/ssologout.htm",
+    "jansPersistClntAuthzs": 0,
+    "jansPostLogoutRedirectURI": {
+      "v": [
+        "https://%(hostname)s/identity/finishlogout.htm"
+      ]
+    },
+    "jansRedirectURI": {
+      "v": [
+        "https://%(hostname)s/identity/scim/auth",
+        "https://%(hostname)s/identity/authcode.htm",
+        "https://%(hostname)s/jans-auth/restv1/uma/gather_claims?authentication=true"
+      ]
+    },
+    "jansRespTyp": {
+      "v": [
+        "code"
+      ]
+    },
+    "jansScope": {
+      "v": [
+        "inum=F0C4,ou=scopes,o=jans",
+        "inum=10B2,ou=scopes,o=jans",
+        "inum=764C,ou=scopes,o=jans"
+      ]
+    },
+    "jansSubjectTyp": "public",
+    "jansTknEndpointAuthMethod": "client_secret_basic",
+    "jansTrustedClnt": 1,
+    "objectClass": "jansClnt"
   }
 ]

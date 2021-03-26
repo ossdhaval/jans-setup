@@ -235,9 +235,8 @@ class DBUtils:
             else:
                 jansConfProperty['v'].append({'value1': 'allowed_clients', 'value2': client_id})
 
-            sqlalchemyObj.jansConfProperty = jansConfProperty                
+            sqlalchemyObj.jansConfProperty = jansConfProperty
             self.session.commit()
-
 
     def get_key_prefix(self, key):
         n = key.find('_')
@@ -300,45 +299,6 @@ class DBUtils:
 
         return table in metadata
 
-    def get_attr_sql_data_type(self, key):
-        if key in self.sql_data_types:
-            data_type = self.sql_data_types[key]
-        else:
-            attr_syntax = self.get_attr_syntax(key)
-            data_type = self.ldap_sql_data_type_mapping[attr_syntax]
-    
-        data_type = (data_type.get(Config.rdbm_type) or data_type['mysql'])['type']
-
-        return data_type
-
-    def get_rdbm_val(self, key, val):
-        if key == 'dn':
-            return val
-
-        data_type = self.get_attr_sql_data_type(key)
-
-        if data_type in ('SMALLINT',):
-            if val[0].lower() in ('1', 'on', 'true', 'yes', 'ok'):
-                return 1
-            return 0
-
-        if data_type == 'INT':
-            return int(val[0])
-
-        if data_type in ('DATETIME(3)', 'TIMESTAMP'):
-            dval = val[0].strip('Z')
-            return "{}-{}-{} {}:{}:{}{}".format(dval[0:4], dval[4:6], dval[6:8], dval[8:10], dval[10:12], dval[12:14], dval[14:17])
-
-        if data_type == 'JSON':
-            json_data = {'v':[]}
-            for d in val:
-                json_data['v'].append(d)
-
-            return json_data
-
-        return val[0]
-
-
     def import_templates(self, templates):
 
         base.logIt("Importing templates file(s): {} ".format(', '.join(templates)))
@@ -354,7 +314,7 @@ class DBUtils:
                     self.rdm_automapper()
 
                 if 'add' in  entry and 'changetype' in entry:
-                    attribute = entry['add'][0]
+                    attribute = entry['add']
                     new_val = entry[attribute]
                     sqlalchObj = self.get_sqlalchObj_for_dn(dn)
 
@@ -365,7 +325,7 @@ class DBUtils:
                                 cur_val['v'].append(val_)
                             setattr(sqlalchObj, attribute, cur_val)
                         else:
-                            setattr(sqlalchObj, attribute, new_val[0])
+                            setattr(sqlalchObj, attribute, new_val)
 
                         self.session.commit()
 
@@ -374,12 +334,11 @@ class DBUtils:
                         continue
 
                 elif 'replace' in entry and 'changetype' in entry:
-                    attribute = entry['replace'][0]
-                    new_val = self.get_rdbm_val(attribute, entry[attribute])
+                    attribute = entry['replace']
                     sqlalchObj = self.get_sqlalchObj_for_dn(dn)
 
                     if sqlalchObj:
-                        setattr(sqlalchObj, attribute, new_val)
+                        setattr(sqlalchObj, attribute, entry[attribute])
                         self.session.commit()
                     else:
                         base.logIt("Can't find current value for repmacement of {}".replace(str(entry)), True)
@@ -391,12 +350,8 @@ class DBUtils:
                     rdn_name = dn_parsed[0][0]
                     objectClass = entry.get('objectClass') or entry.get('objectclass')
 
-                    if objectClass:
-                        if 'top' in objectClass:
-                            objectClass.remove('top')
-                        if  len(objectClass) == 1 and objectClass[0].lower() == 'organizationalunit':
-                            continue
-                        objectClass = objectClass[-1]
+                    if objectClass and objectClass.lower() == 'organizationalunit':
+                        continue
 
                     vals['doc_id'] = dn_parsed[0][1]
                     vals['objectClass'] = objectClass
@@ -414,7 +369,7 @@ class DBUtils:
                         continue
 
                     for lkey in entry:
-                        vals[lkey] = self.get_rdbm_val(lkey, entry[lkey])
+                        vals[lkey] = entry[lkey]
 
                     sqlalchCls = self.Base.classes[table_name]
 
