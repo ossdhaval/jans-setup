@@ -10,5 +10,5 @@ jansScr::%(person_authentication_openbanking)s
 jansScrTyp: person_authentication
 objectClass: top
 objectClass: jansCustomScr
-jansEnabled: false
+jansEnabled: true
 jansProgLng: python
