@@ -136,7 +136,7 @@
     ],
     "dynamicGrantTypeDefault":[
     ],
-    "claimsParameterSupported":false,
+    "claimsParameterSupported":true,
     "requestParameterSupported":true,
     "requestUriParameterSupported":true,
     "requireRequestUriRegistration":false,
