@@ -29,6 +29,7 @@
         "issuer",
         "authorization_endpoint",
         "token_endpoint",
+        "registration_endpoint",
         "token_endpoint_auth_methods_supported",
         "jwks_uri",
         "scopes_supported",
