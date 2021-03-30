@@ -9,7 +9,7 @@ def arg_parser():
     parser = argparse.ArgumentParser(description=parser_description)
     parser.add_argument('-c', help="Use command line instead of tui", action='store_true')
     parser.add_argument('-d', help="Installation directory")
-    parser.add_argument('-n', help="No interactive prompt before install starts. Run with -f", action='store_true')
+    parser.add_argument('-n', help="No interactive prompt before install starts", action='store_true')
     parser.add_argument('-N', '--no-httpd', help="No apache httpd server", action='store_true')
 
     rdbm_group = parser.add_mutually_exclusive_group()

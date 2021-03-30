@@ -105,7 +105,7 @@ if os.path.exists(Config.jans_properties_fn):
     collectProperties.collect()
     Config.installed_instance = True
 
-if not not Config.noPrompt and not Config.installed_instance:
+if not Config.noPrompt and not Config.installed_instance:
     propertiesUtils.promptForProperties()
 
 propertiesUtils.check_properties()
