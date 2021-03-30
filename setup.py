@@ -103,15 +103,9 @@ print()
 collectProperties = CollectProperties()
 if os.path.exists(Config.jans_properties_fn):
     collectProperties.collect()
-    collectProperties.save()
     Config.installed_instance = True
 
-    if argsp.csx:
-        print("Saving collected properties")
-        collectProperties.save()
-        sys.exit()
-
-if not Config.noPrompt and not Config.installed_instance:
+if not not Config.noPrompt and not Config.installed_instance:
     propertiesUtils.promptForProperties()
 
 propertiesUtils.check_properties()
@@ -136,7 +130,7 @@ if Config.installed_instance:
     if not argsp.shell:
         propertiesUtils.promptForProperties()
 
-        if not (argsp.t or argsp.x) and not Config.addPostSetupService:
+        if not Config.addPostSetupService:
             print("No service was selected to install. Exiting ...")
             sys.exit()
 

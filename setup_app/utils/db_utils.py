@@ -74,7 +74,7 @@ class DBUtils:
     @property
     def json_dialects_instance(self):
         return sqlalchemy.dialects.mysql.json.JSON if Config.rdbm_type == 'mysql' else sqlalchemy.dialects.postgresql.json.JSON
-        
+
     def mysqlconnection(self, log=True):
         return self.sqlconnection(log)
 
@@ -95,18 +95,18 @@ class DBUtils:
 
     def exec_rdbm_query(self, query, getresult=False):
         base.logIt("Executing {} Query: {}".format(Config.rdbm_type, query))
-        if Config.rdbm_type in ('mysql', 'pgsql'):
-            try:
-                qresult = self.session.execute(query)
-                self.session.commit()
-            except Exception as e:
-                base.logIt("ERROR executing query {}".format(e.args))
-                base.logIt("ERROR executing query {}".format(e.args), True)
-            else:
-                if getresult == 1:
-                    return qresult.first()
-                elif getresult:
-                    return qresult.fetchall()
+
+        try:
+            qresult = self.session.execute(query)
+            self.session.commit()
+        except Exception as e:
+            base.logIt("ERROR executing query {}".format(e.args))
+            base.logIt("ERROR executing query {}".format(e.args), True)
+        else:
+            if getresult == 1:
+                return qresult.first()
+            elif getresult:
+                return qresult.fetchall()
 
     def get_oxAuthConfDynamic(self):
 
@@ -165,6 +165,8 @@ class DBUtils:
     def search(self, search_base, search_filter='(objectClass=*)', fetchmany=False):
         base.logIt("Searching database for dn {} with filter {}".format(search_base, search_filter))
 
+        search_base = search_base.replace('*', '%')
+
         if self.Base is None:
             self.rdm_automapper()
 
@@ -208,6 +210,22 @@ class DBUtils:
                     sqlalchemyQueryObject = sqlalchemyQueryObject.filter(sqlalchemyCol.like(val))
                 else:
                     sqlalchemyQueryObject = sqlalchemyQueryObject.filter(sqlalchemyCol == val)
+
+
+        if '%' in search_base:
+             sqlalchemyQueryObject = sqlalchemyQueryObject.filter(sqlalchemy_table.dn.like(search_base))
+        else:
+             sqlalchemyQueryObject = sqlalchemyQueryObject.filter(sqlalchemy_table.dn == search_base)
+
+
+        if fetchmany:
+            result = sqlalchemyQueryObject.all()
+        else:
+            result = sqlalchemyQueryObject.first()
+
+
+        if result:
+            return result.__dict__
 
     def add2strlist(self, client_id, strlist):
         value2 = []
