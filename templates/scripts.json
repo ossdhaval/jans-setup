@@ -17,5 +17,22 @@
     "objectClass": "jansCustomScr",
     "jansEnabled": 1,
     "jansProgLng": "python"
+  },
+  {
+    "dn": "inum=DAA9-B788,ou=scripts,o=jans",
+    "description": "Openbanking Client Registration",
+    "displayName": "client_registration",
+    "inum": "DAA9-B788",
+    "jansLevel": 100,
+    "jansModuleProperty": {
+      "v": [
+      ]
+    },
+    "jansRevision": 1,
+    "jansScr": %(client_registration_registration)s,
+    "jansScrTyp": "client_registration",
+    "objectClass": "jansCustomScr",
+    "jansEnabled": 1,
+    "jansProgLng": "python"
   }
 ]
