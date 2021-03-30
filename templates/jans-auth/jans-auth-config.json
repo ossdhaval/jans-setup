@@ -171,6 +171,7 @@
     "dcrSignatureValidationJwks": null,
     "dcrSignatureValidationJwksUri": null,
     "dcrAuthorizationWithClientCredentials": true,
+    "dcrSkipSignatureValidation": true,
     "softwareStatementValidationType": "jwks_uri",
     "softwareStatementValidationClaimName": "jwks_uri",
     "dynamicRegistrationEnabled":true,
