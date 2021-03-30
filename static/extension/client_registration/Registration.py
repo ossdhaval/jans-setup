@@ -1,0 +1,55 @@
+# oxAuth is available under the MIT License (2008). See http://opensource.org/licenses/MIT for full text.
+# Copyright (c) 2021, Gluu
+#
+# Author: Yuriy Zabrovarnyy
+#
+
+from io.jans.model.custom.script.type.client import ClientRegistrationType
+from io.jans.service.cdi.util import CdiUtil
+from io.jans.as.server.service import ScopeService
+from io.jans.util import StringHelper, ArrayHelper
+from java.util import Arrays, ArrayList, HashSet
+from io.jans.as.model.util import JwtUtil
+
+import java
+
+class Registration(ClientRegistrationType):
+    def __init__(self, currentTimeMillis):
+        self.currentTimeMillis = currentTimeMillis
+
+    def init(self, customScript, configurationAttributes):
+        print "Client registration. Initialization"
+
+        self.clientRedirectUrisSet = self.prepareClientRedirectUris(configurationAttributes)
+
+        print "Client registration. Initialized successfully"
+        return True
+
+    def destroy(self, configurationAttributes):
+        print "Client registration. Destroy"
+        print "Client registration. Destroyed successfully"
+        return True
+
+    def createClient(self, registerRequest, client, configurationAttributes):
+        print "Client registration. CreateClient method"
+        return True
+
+    def updateClient(self, registerRequest, client, configurationAttributes):
+        print "Client registration. UpdateClient method"
+        return True
+
+    def getApiVersion(self):
+        return 11
+
+    def getSoftwareStatementHmacSecret(self, context):
+        return ""
+
+    def getSoftwareStatementJwks(self, context):
+        return ""
+
+    def getDcrHmacSecret(self, context):
+        return ""
+
+    def getDcrJwks(self, context):
+        print "Client registration. getDcrJwks method"
+        return JwtUtil.getJSONWebKeys("https://keystore.openbankingtest.org.uk/keystore/openbanking.jwks")
