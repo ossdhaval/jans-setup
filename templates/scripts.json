@@ -26,6 +26,7 @@
     "jansLevel": 100,
     "jansModuleProperty": {
       "v": [
+        "{\"value1\":\"v1\",\"value2\":\"v2\",\"description\":\"\"}"
       ]
     },
     "jansRevision": 1,
