@@ -68,6 +68,7 @@ class JansAuthInstaller(JettyInstaller):
         enc_keys = 'RSA1_5 RSA-OAEP'
         jwks = self.gen_openid_jwks_jks_keys(self.oxauth_openid_jks_fn, Config.oxauth_openid_jks_pass, key_expiration=2, key_algs=sig_keys, enc_keys=enc_keys)
         self.write_openid_keys(self.oxauth_openid_jwks_fn, jwks)
+        self.import_openbanking_key()
 
     def render_import_templates(self):
 
@@ -110,6 +111,13 @@ class JansAuthInstaller(JettyInstaller):
                             '-noprompt', '-alias', alias, '-file', random_crt_fn])
 
         os.remove(random_crt_fn)
+
+    def import_openbanking_key(self):
+        key_fn = '/root/obsigning-axV5umCvTMBMjPwjFQgEvb_NO_UPLOAD.key'
+        cert_fn = '/root/obsigning.pem'
+        alias = 'GkwIzWy88xWSlcWnLiEc8ip9s2M'
+        if os.path.isfile(key_fn) and os.path.isfile(cert_fn):
+            self.gen_keystore('obsigning', self.oxauth_openid_jks_fn, Config.oxauth_openid_jks_pass, key_fn, cert_fn, alias)
 
 
     def installed(self):
