@@ -52,7 +52,7 @@ class JansCliInstaller(BaseInstaller, SetupUtils):
         if not 'DEFAULT' in config:
             config['DEFAULT'] = {}
 
-        config['DEFAULT']['askuser'] = 'true'
+        #config['DEFAULT']['askuser'] = 'true'
 
         if not 'debug' in config['DEFAULT']:
             config['DEFAULT']['debug'] = 'false'

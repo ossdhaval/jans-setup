@@ -137,7 +137,7 @@ class ConfigApiInstaller(SetupUtils, BaseInstaller):
                 'jansAttrs': '{"tlsClientAuthSubjectDn":"","runIntrospectionScriptBeforeAccessTokenAsJwtCreationAndIncludeClaims":false,"keepClientAuthorizationAfterExpiration":false,"allowSpontaneousScopes":false,"spontaneousScopes":[],"spontaneousScopeScriptDns":[],"backchannelLogoutUri":[],"backchannelLogoutSessionRequired":false,"additionalAudience":[],"postAuthnScripts":[],"consentGatheringScripts":[],"introspectionScripts":[],"rptClaimsScripts":[]}',
                 'jansClntSecret': Config.jca_client_encoded_pw,
                 'jansDisabled': 0,
-                'jansGrantTyp': {'v': ['authorization_code', 'refresh_token', 'password']},
+                'jansGrantTyp': {'v': ['authorization_code', 'refresh_token', 'client_credentials']},
                 'jansIdTknSignedRespAlg': 'RS256',
                 'jansInclClaimsInIdTkn': 0,
                 'jansLogoutSessRequired': 0,
