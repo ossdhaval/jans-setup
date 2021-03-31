@@ -18,9 +18,6 @@ class Registration(ClientRegistrationType):
 
     def init(self, customScript, configurationAttributes):
         print "Client registration. Initialization"
-
-        self.clientRedirectUrisSet = self.prepareClientRedirectUris(configurationAttributes)
-
         print "Client registration. Initialized successfully"
         return True
 
