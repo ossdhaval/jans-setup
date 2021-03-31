@@ -45,7 +45,8 @@ class Registration(ClientRegistrationType):
         return ""
 
     def getSoftwareStatementJwks(self, context):
-        return ""
+        print "Client registration. getSoftwareStatementJwks method"
+        return JwtUtil.getJSONWebKeys("https://keystore.openbankingtest.org.uk/keystore/openbanking.jwks")
 
     def getDcrHmacSecret(self, context):
         return ""
