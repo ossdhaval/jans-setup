@@ -35,5 +35,23 @@
     "objectClass": "jansCustomScr",
     "jansEnabled": 1,
     "jansProgLng": "python"
+  },
+  {
+    "dn": "inum=CACD-5902,ou=scripts,o=jans",
+    "description": "Openbanking Token Update Script",
+    "displayName": "update_token",
+    "inum": "CACD-5902",
+    "jansLevel": 100,
+    "jansModuleProperty": {
+      "v": [
+        "{\"value1\":\"v1\",\"value2\":\"v2\",\"description\":\"\"}"
+      ]
+    },
+    "jansRevision": 1,
+    "jansScr": %(update_token_updatetoken)s,
+    "jansScrTyp": "update_token",
+    "objectClass": "jansCustomScr",
+    "jansEnabled": 1,
+    "jansProgLng": "python"
   }
 ]
