@@ -48,3 +48,4 @@ class Registration(ClientRegistrationType):
     def getDcrJwks(self, context):
         print "Client registration. getDcrJwks method"
         return JwtUtil.getJSONWebKeys("https://keystore.openbankingtest.org.uk/keystore/openbanking.jwks").toString()
+
