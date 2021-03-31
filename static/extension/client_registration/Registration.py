@@ -5,12 +5,11 @@
 
 from io.jans.model.custom.script.type.client import ClientRegistrationType
 from io.jans.service.cdi.util import CdiUtil
-from io.jans.as.server.service import ScopeService
 from io.jans.as.model.util import JwtUtil
 
 import java
 
-class Registration(ClientRegistrationType):
+class ClientRegistration(ClientRegistrationType):
     def __init__(self, currentTimeMillis):
         self.currentTimeMillis = currentTimeMillis
 
