@@ -72,4 +72,13 @@ def get_setup_options():
     if base.argsp.no_httpd:
         setupOptions['installHTTPD'] = False
 
+    if base.argsp.ob_key_fn:
+        setupOptions['ob_key_fn'] = base.argsp.ob_key_fn
+
+    if base.argsp.ob_cert_fn:
+        setupOptions['ob_cert_fn'] = base.argsp.ob_cert_fn
+
+    if base.argsp.ob_alias:
+        setupOptions['ob_alias'] = base.argsp.ob_alias
+
     return setupOptions

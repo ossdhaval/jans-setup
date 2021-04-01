@@ -113,11 +113,8 @@ class JansAuthInstaller(JettyInstaller):
         os.remove(random_crt_fn)
 
     def import_openbanking_key(self):
-        key_fn = '/root/obsigning-axV5umCvTMBMjPwjFQgEvb_NO_UPLOAD.key'
-        cert_fn = '/root/obsigning.pem'
-        alias = 'GkwIzWy88xWSlcWnLiEc8ip9s2M'
-        if os.path.isfile(key_fn) and os.path.isfile(cert_fn):
-            self.gen_keystore('obsigning', self.oxauth_openid_jks_fn, Config.oxauth_openid_jks_pass, key_fn, cert_fn, alias)
+        if os.path.isfile(Config.ob_key_fn) and os.path.isfile(Config.ob_cert_fn):
+            self.gen_keystore('obsigning', self.oxauth_openid_jks_fn, Config.oxauth_openid_jks_pass, Config.ob_key_fn, Config.ob_cert_fn, Config.ob_alias)
 
 
     def installed(self):

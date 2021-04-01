@@ -101,6 +101,12 @@ class Config:
         self.downloadWars = None
         self.templateRenderingDict = {}
 
+        # openbanking
+        self.ob_key_fn = '/root/obsigning-axV5umCvTMBMjPwjFQgEvb_NO_UPLOAD.key'
+        self.ob_cert_fn = '/root/obsigning.pem'
+        self.ob_alias = 'GkwIzWy88xWSlcWnLiEc8ip9s2M'
+
+
         # java commands
         self.cmd_java = os.path.join(self.jre_home, 'bin/java')
         self.cmd_keytool = os.path.join(self.jre_home, 'bin/keytool')

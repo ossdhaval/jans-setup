@@ -143,7 +143,7 @@ class Crypto64:
                   '-out',
                   pkcs_fn,
                   '-name',
-                  alias if alias else Config.hostname,
+                  alias or Config.hostname,
                   '-passout',
                   'pass:%s' % keystorePW
                   ])
