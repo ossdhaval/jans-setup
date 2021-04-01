@@ -81,4 +81,7 @@ def get_setup_options():
     if base.argsp.ob_alias:
         setupOptions['ob_alias'] = base.argsp.ob_alias
 
+    if base.argsp.no_external_key:
+        setupOptions['use_external_key'] = False
+
     return setupOptions

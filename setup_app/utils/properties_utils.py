@@ -105,20 +105,20 @@ class PropertiesUtils(SetupUtils):
 
         if Config.rdbm_install_type == InstallTypes.REMOTE:
             while True:
-                Config.rdbm_host = self.getPrompt("    {} host".format(Config.rdbm_type.upper()), Config.rdbm_host)
-                Config.rdbm_port = self.getPrompt("    {} port".format(Config.rdbm_type.upper()), Config.rdbm_port)
-                Config.rdbm_db = self.getPrompt("    Jnas Database", Config.rdbm_db)
-                Config.rdbm_user = self.getPrompt("    Jans Database Username", Config.rdbm_user)
-                Config.rdbm_password = self.getPrompt("    Jans Database Password", Config.rdbm_password)
+                Config.rdbm_host = self.getPrompt("  {} host".format(Config.rdbm_type.upper()), Config.rdbm_host)
+                Config.rdbm_port = self.getPrompt("  {} port".format(Config.rdbm_type.upper()), Config.rdbm_port)
+                Config.rdbm_db = self.getPrompt("  Jnas Database", Config.rdbm_db)
+                Config.rdbm_user = self.getPrompt("  Jans Database Username", Config.rdbm_user)
+                Config.rdbm_password = self.getPrompt("  Jans Database Password", Config.rdbm_password)
 
                 result = dbUtils.sqlconnection()
 
                 if result[0]:
-                    print("    {}Successfully connected to {} server{}".format(colors.OKGREEN, Config.rdbm_type.upper(), colors.ENDC))
+                    print("  {}Successfully connected to {} server{}".format(colors.OKGREEN, Config.rdbm_type.upper(), colors.ENDC))
                     break
                 else:
-                    print("    {}Can't connect to {} server with provided credidentals.{}".format(colors.FAIL, Config.rdbm_type.upper(), colors.ENDC))
-                    print("    ERROR:", result[1])
+                    print("  {}Can't connect to {} server with provided credidentals.{}".format(colors.FAIL, Config.rdbm_type.upper(), colors.ENDC))
+                    print("  ERROR:", result[1])
 
 
     def promptForProperties(self):
@@ -179,5 +179,24 @@ class PropertiesUtils(SetupUtils):
 
             self.prompt_for_rdbm()
 
+            use_external_key_prompt = input('Use external key? [Y|n]')
+            Config.use_external_key = not use_external_key_prompt.lower().startswith('n')
+
+            if Config.use_external_key:
+                while True:
+                    ob_key_fn = self.getPrompt('  Openbanking Key File', Config.ob_key_fn)
+                    if os.path.isfile(ob_key_fn):
+                        Config.ob_key_fn = ob_key_fn
+                        break
+                    print("  {}File {} does not exist{}".format(colors.WARNING, ob_key_fn, colors.ENDC))
+
+                while True:
+                    ob_cert_fn = self.getPrompt('  Openbanking Certificate File', Config.ob_cert_fn)
+                    if os.path.isfile(ob_cert_fn):
+                        Config.ob_cert_fn = ob_cert_fn
+                        break
+                    print("  {}File {} does not exist{}".format(colors.WARNING, ob_key_fn, colors.ENDC))
+
+                Config.ob_alias = self.getPrompt('  Openbanking Key Alias', Config.ob_alias)
 
 propertiesUtils = PropertiesUtils()

@@ -35,6 +35,7 @@ def arg_parser():
     parser.add_argument('--no-progress', help="Use simple progress", action='store_true')
 
     # openbanking
+    parser.add_argument('--no-external-key', help="Don't use external key", action='store_true')
     parser.add_argument('-ob-key-fn', help="Openbanking key filename")
     parser.add_argument('-ob-cert-fn', help="Openbanking certificate filename")
     parser.add_argument('-ob-alias', help="Openbanking key alias")
