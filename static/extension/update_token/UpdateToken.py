@@ -1,6 +1,6 @@
 from io.jans.service.cdi.util import CdiUtil
 from io.jans.model.custom.script.type.token import UpdateTokenType
-from io.jans.oxauth.service import SessionIdService
+from io.jans.as.server.service import SessionIdService
 import java
 import sys
 import os
@@ -27,28 +27,32 @@ class UpdateToken(UpdateTokenType):
     # This method is called after adding headers and claims. Hence script can override them
     # Note :
     # jsonWebResponse - is JwtHeader, you can use any method to manipulate JWT
-    # context is reference of org.gluu.oxauth.service.external.context.ExternalUpdateTokenContext (in https://github.com/GluuFederation/oxauth project, )
+    # context is reference of io.jans.oxauth.service.external.context.ExternalUpdateTokenContext (in https://github.com/GluuFederation/oxauth project, )
     def modifyIdToken(self, jsonWebResponse, context):
-        print "Update token script. Modify idToken: %s" % jsonWebResponse
-        try :
-            sessionIdService = CdiUtil.bean(SessionIdService)
-            sessionId = sessionIdService.getSessionByDn(context.getGrant().getSessionDn()) # fetch from persistence
+                print "Update token obconnect script. Modify idToken: %s" % jsonWebResponse
+		try :
+			sessionIdService = CdiUtil.bean(SessionIdService)
+			print "session id from context - %s" % context.getGrant().getSessionDn().strip("oxId=")
 
-            openbanking_intent_id = sessionId.getSessionAttributes().get("openbanking_intent_id")
-            acr = sessionId.getSessionAttributes().get("acr_ob")
+			sessionId = sessionIdService.getSessionByDn(context.getGrant().getSessionDn()) # fetch from persistence
 
-            #jsonWebResponse.getHeader().setClaim("custom_header_name", "custom_header_value")
+                        
+			print "session id -%s " % sessionId.getSessionAttributes()
+			openbanking_intent_id = sessionId.getSessionAttributes().get("openbanking_intent_id")
+			acr = sessionId.getSessionAttributes().get("acr_ob")
 
-            #custom claims
-            jsonWebResponse.getClaims().setClaim("openbanking_intent_id", openbanking_intent_id)
-            jsonWebResponse.getClaims().setClaim("acr", acr)
+			#jsonWebResponse.getHeader().setClaim("custom_header_name", "custom_header_value")
+			
+			#custom claims
+			jsonWebResponse.getClaims().setClaim("openbanking_intent_id", openbanking_intent_id)
+			jsonWebResponse.getClaims().setClaim("acr", acr)
+			
+			#regular claims        
+			jsonWebResponse.getClaims().setClaim("sub", openbanking_intent_id)
 
-            #regular claims
-            jsonWebResponse.getClaims().setClaim("sub", openbanking_intent_id)
-
-            print "Update token script. After modify idToken: %s" % jsonWebResponse
-
-            return True
-        except:
-            print "update token failure" , sys.exc_info()[1]
-            return None
+			print "Update token script. After modify idToken: %s" % jsonWebResponse
+		
+			return True
+		except:
+	                print "update token failure" , sys.exc_info()[1]
+	                return None
