@@ -258,7 +258,7 @@
         "delayTime": 2,
         "bruteForceProtectionEnabled": false
     },
-    "loggingLevel": "DEBUG",
+    "loggingLevel": "TRACE",
     "loggingLayout": "text",
     "errorHandlingMethod":"internal",
     "useLocalCache":true,
