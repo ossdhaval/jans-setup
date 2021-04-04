@@ -6,6 +6,8 @@
 from io.jans.model.custom.script.type.client import ClientRegistrationType
 from io.jans.service.cdi.util import CdiUtil
 from io.jans.as.model.util import JwtUtil
+from io.jans.as.model.util import CertUtils
+from java.security.cert import X509Certificate
 
 import java
 
@@ -24,11 +26,14 @@ class ClientRegistration(ClientRegistrationType):
         return True
 
     def createClient(self, registerRequest, client, configurationAttributes):
-        X509Certificate cert = CertUtils.x509CertificateFromPem(clientCertAsPem)
-        final String cn = CertUtils.getCN(cert)
-        client.setDn("inum=" + cn + "," + clientsBaseDN)
-        client.setClientId(cn)
         print "Client registration. CreateClient method"
+        X509Certificate cert = CertUtils.x509CertificateFromPem(configurationAttributes.get("certProperty"))
+        cn = CertUtils.getCN(cert)
+        print "Client registration. cn: " + cn
+
+        client.setDn("inum=" + cn + ",ou=clients,o=jans")
+        client.setClientId(cn)
+
         return True
 
     def updateClient(self, registerRequest, client, configurationAttributes):
