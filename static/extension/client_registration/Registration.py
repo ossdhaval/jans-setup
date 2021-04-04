@@ -24,6 +24,10 @@ class ClientRegistration(ClientRegistrationType):
         return True
 
     def createClient(self, registerRequest, client, configurationAttributes):
+        X509Certificate cert = CertUtils.x509CertificateFromPem(clientCertAsPem)
+        final String cn = CertUtils.getCN(cert)
+        client.setDn("inum=" + cn + "," + clientsBaseDN)
+        client.setClientId(cn)
         print "Client registration. CreateClient method"
         return True
 
