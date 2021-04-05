@@ -88,8 +88,8 @@ class PersonAuthentication(PersonAuthenticationType):
     def prepareForStep(self, configurationAttributes, requestParameters, step):
         print "OpenBanking. prepare for step... %s" % step 
         #extract intent id from request object which is an encoded JWT
-        request = ServerUtil.getFirstValue(requestParameters, "request")
-        #request = "eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiZGlyIn0..oq8dqcaM-3wmg-Lx.szxCZE4H9QayTIr7ZXZ1YoQmCOtmvWQP06LKjJy9jqPFZ7-SnMkWeDNxqd3559pfNU-SyH555r7VagYYqMKMpoBm.zUe6Slv-2ZRLi55jz5Z7kA"
+        #request = ServerUtil.getFirstValue(requestParameters, "request")
+        request = "eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiZGlyIn0..oq8dqcaM-3wmg-Lx.szxCZE4H9QayTIr7ZXZ1YoQmCOtmvWQP06LKjJy9jqPFZ7-SnMkWeDNxqd3559pfNU-SyH555r7VagYYqMKMpoBm.zUe6Slv-2ZRLi55jz5Z7kA"
         jweObject = JWEObject.parse(request)
         #Decrypt
         jweObject.decrypt(DirectDecrypter((String(self.sharedSecret)).getBytes()))
