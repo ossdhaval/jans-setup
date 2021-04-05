@@ -27,18 +27,22 @@ class ClientRegistration(ClientRegistrationType):
 
     def createClient(self, registerRequest, client, configurationAttributes):
         print "Client registration. CreateClient method"
-        
         facesContext = CdiUtil.bean(FacesContext)
         request = facesContext.getExternalContext().getRequest()
         clientCertAsPem = request.getHeader(“X-ClientCert”)
         cert = CertUtils.x509CertificateFromPem(clientCertAsPem)
-        cn = CertUtils.getCN(cert)
-        print "Client registration. cn: " + cn
+        if (clientCertAsPem == None):
+            print "Client registration. cert not found"	
+        else 
+            cn = CertUtils.getCN(cert)
+            print "Client registration. cn: " + cn
 
-        client.setDn("inum=" + cn + ",ou=clients,o=jans")
-        client.setClientId(cn)
+            client.setDn("inum=" + cn + ",ou=clients,o=jans")
+            client.setClientId(cn)
 
-        return True
+            return True
+        
+        return False
 
     def updateClient(self, registerRequest, client, configurationAttributes):
         print "Client registration. UpdateClient method"
