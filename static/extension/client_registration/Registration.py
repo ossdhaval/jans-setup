@@ -29,7 +29,7 @@ class ClientRegistration(ClientRegistrationType):
         print "Client registration. CreateClient method"
         facesContext = CdiUtil.bean(FacesContext)
         request = facesContext.getExternalContext().getRequest()
-        clientCertAsPem = request.getHeader(“X-ClientCert”)
+        clientCertAsPem = request.getHeader("X-ClientCert")
         cert = CertUtils.x509CertificateFromPem(clientCertAsPem)
         if (clientCertAsPem == None):
             print "Client registration. cert not found"	
