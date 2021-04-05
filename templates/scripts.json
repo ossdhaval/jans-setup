@@ -2,7 +2,7 @@
   {
     "dn": "inum=A51E-76DA,ou=scripts,o=jans",
     "description": "Openbanking authentication module",
-    "displayName": "person_authentication",
+    "displayName": "urn:openbanking:psd2:sca",
     "inum": "A51E-76DA",
     "jansLevel": 10,
     "jansModuleProperty": {
