@@ -33,7 +33,7 @@ class ClientRegistration(ClientRegistrationType):
         cert = CertUtils.x509CertificateFromPem(clientCertAsPem)
         if (clientCertAsPem == None):
             print "Client registration. cert not found"	
-        else 
+        else: 
             cn = CertUtils.getCN(cert)
             print "Client registration. cn: " + cn
 
