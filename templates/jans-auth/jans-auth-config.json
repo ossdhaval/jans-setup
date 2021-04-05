@@ -131,6 +131,9 @@
         "tr"
     ],
     "dynamicGrantTypeDefault":[
+        "client_credentials",
+        "authorization_code",
+        "refresh_token"
     ],
     "claimsParameterSupported":true,
     "requestParameterSupported":true,
