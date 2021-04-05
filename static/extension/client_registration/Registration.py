@@ -34,6 +34,9 @@ class ClientRegistration(ClientRegistrationType):
 
         client.setDn("inum=" + cn + ",ou=clients,o=jans")
         client.setClientId(cn)
+        
+        return True
+        
 
         
 
