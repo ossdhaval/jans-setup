@@ -7,6 +7,7 @@ from io.jans.model.custom.script.type.client import ClientRegistrationType
 from io.jans.service.cdi.util import CdiUtil
 from io.jans.as.model.util import JwtUtil
 from io.jans.as.model.util import CertUtils
+from io.jans.as.model.jwt import Jwt
 
 
 import java
