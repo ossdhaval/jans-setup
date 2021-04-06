@@ -10,24 +10,24 @@ from io.jans.as.server.util import ServerUtil
 from io.jans.as.server.service import UserService, SessionIdService,AuthenticationService
 from io.jans.as.common.model.common import User 
 from java.lang import String
-from org.gluu.oxauth.model.jwk import JSONWebKey;
-from org.gluu.oxauth.model.jwk import JSONWebKeySet;
 from com.nimbusds.jwt import SignedJWT
-from com.nimbusds.jose.jwk import JWKSet;
+from com.nimbusds.jose.jwk import JWKSet
 from org.json import JSONObject
 
-from com.nimbusds.jose import JWSVerifier;
-from com.nimbusds.jose.crypto import RSASSAVerifier;
-from com.nimbusds.jose.jwk import RSAKey;
+from com.nimbusds.jose import JWSVerifier
+from com.nimbusds.jose.crypto import RSASSAVerifier
+from com.nimbusds.jose.jwk import RSAKey
 
-from org.apache.commons.codec.binary import Base64;
-from com.nimbusds.jose import EncryptionMethod;
-from com.nimbusds.jose import JWEAlgorithm;
-from com.nimbusds.jose import JWEHeader;
-from com.nimbusds.jose import JWEObject;
-from com.nimbusds.jose import Payload;
-from com.nimbusds.jose.crypto import DirectDecrypter;
-from com.nimbusds.jose.crypto import DirectEncrypter;
+from org.apache.commons.codec.binary import Base64
+from com.nimbusds.jose import EncryptionMethod
+from com.nimbusds.jose import JWEAlgorithm
+from com.nimbusds.jose import JWEHeader
+from com.nimbusds.jose import JWEObject
+from com.nimbusds.jose import Payload
+from com.nimbusds.jose.crypto import DirectDecrypter
+from com.nimbusds.jose.crypto import DirectEncrypter
+
+from java.net import URL
 import time
 import java
 import sys
@@ -99,9 +99,9 @@ class PersonAuthentication(PersonAuthenticationType):
     def prepareForStep(self, configurationAttributes, requestParameters, step):
         print "OpenBanking. prepare for step... %s" % step 
         
-        jwkSet = JWKSet.load(new URL(self.tpp_jwks_url));
+        jwkSet = JWKSet.load( URL(self.tpp_jwks_url));
         signedRequest = ServerUtil.getFirstValue(requestParameters, "request")
-        for (key : jwkSet.getKeys()) : 
+        for key in jwkSet.getKeys() : 
             result = isSignatureValid(signedRequest, key)
             if (result == true):
                 signedJWT = SignedJWT.parse(signedRequest)
@@ -142,7 +142,7 @@ class PersonAuthentication(PersonAuthenticationType):
     def logout(self, configurationAttributes, requestParameters):
         return True
         
-    def isSignatureValid( token,  publickey) {
+    def isSignatureValid( token,  publickey) :
 		# Parse the JWS and verify its RSA signature
 		
 		try:
