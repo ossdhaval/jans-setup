@@ -99,7 +99,7 @@ class PersonAuthentication(PersonAuthenticationType):
     def prepareForStep(self, configurationAttributes, requestParameters, step):
         print "OpenBanking. prepare for step... %s" % step 
         
-        JWKSet jwkSet = JWKSet.load(new URL(self.tpp_jwks_url));
+        jwkSet = JWKSet.load(new URL(self.tpp_jwks_url));
         signedRequest = ServerUtil.getFirstValue(requestParameters, "request")
         for (key : jwkSet.getKeys()) : 
             result = isSignatureValid(signedRequest, key)
