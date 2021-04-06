@@ -10,7 +10,17 @@ from io.jans.as.server.util import ServerUtil
 from io.jans.as.server.service import UserService, SessionIdService,AuthenticationService
 from io.jans.as.common.model.common import User 
 from java.lang import String
+from org.gluu.oxauth.model.jwk import JSONWebKey;
+from org.gluu.oxauth.model.jwk import JSONWebKeySet;
+from com.nimbusds.jwt import SignedJWT
+from com.nimbusds.jose.jwk import JWKSet;
+from org.json import JSONObject
 
+from com.nimbusds.jose import JWSVerifier;
+from com.nimbusds.jose.crypto import RSASSAVerifier;
+from com.nimbusds.jose.jwk import RSAKey;
+
+from org.apache.commons.codec.binary import Base64;
 from com.nimbusds.jose import EncryptionMethod;
 from com.nimbusds.jose import JWEAlgorithm;
 from com.nimbusds.jose import JWEHeader;
@@ -30,6 +40,7 @@ class PersonAuthentication(PersonAuthenticationType):
     def init(self, customScript, configurationAttributes):
         # TODO: ideally this will come from a configuration
         self.sharedSecret =  "kXp2s5v8y/B?E(H+MbPeShVmYq3t6w9z"
+        self.tpp_jwks_url = "https://keystore.openbankingtest.org.uk/0014H00001lFE7dQAG/0014H00001lFE7dQAG.jwks"
         print "OpenBanking Person authentication script initialized."
         return True   
 
@@ -87,33 +98,29 @@ class PersonAuthentication(PersonAuthenticationType):
 
     def prepareForStep(self, configurationAttributes, requestParameters, step):
         print "OpenBanking. prepare for step... %s" % step 
-        #extract intent id from request object which is an encoded JWT
-        #request = ServerUtil.getFirstValue(requestParameters, "request")
-        request = "eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiZGlyIn0..oq8dqcaM-3wmg-Lx.szxCZE4H9QayTIr7ZXZ1YoQmCOtmvWQP06LKjJy9jqPFZ7-SnMkWeDNxqd3559pfNU-SyH555r7VagYYqMKMpoBm.zUe6Slv-2ZRLi55jz5Z7kA"
-        jweObject = JWEObject.parse(request)
-        #Decrypt
-        jweObject.decrypt(DirectDecrypter((String(self.sharedSecret)).getBytes()))
-
-        # Get the plain text
-        print "jweobject : %s " % jweObject
-        payload = jweObject.getPayload()
-        print "OpenBanking.Request payload containing intent id- %s- " % payload 
-        print " open intent id %s - " % payload.toJSONObject().get("openbanking_intent_id") 
         
-        # A successful authorization will always return the `result` claim with login and consent details
-        if payload.toJSONObject().get("openbanking_intent_id") is not None:
-            openbanking_intent_id = str(payload.toJSONObject().get("openbanking_intent_id"))
-            print "openbanking_intent_id %s" % openbanking_intent_id
-            #sessionId = CdiUtil.bean(SessionIdService).getSessionId()
-            
-            redirectURL = "https://bank-op.gluu.org/" #self.getRedirectURL (openbanking_intent_id, sessionId)
+        JWKSet jwkSet = JWKSet.load(new URL(self.tpp_jwks_url));
+        signedRequest = ServerUtil.getFirstValue(requestParameters, "request")
+        for (key : jwkSet.getKeys()) : 
+            result = isSignatureValid(signedRequest, key)
+            if (result == true):
+                signedJWT = SignedJWT.parse(signedRequest)
+				json  = JSONObject(signedJWT.getJWTClaimsSet().getClaims().get("claims"))
+                print "json "
+                json_id_token = JSONObject(json.get("id_token"))
+                print "json id_token"
+                openbanking_intent_id = json_id_token.get("openbanking_intent_id")
+                print "openbanking_intent_id %s " % openbanking_intent_id
+                redirectURL = "https://bank-op.gluu.org/" #self.getRedirectURL (openbanking_intent_id, sessionId)
      
-            print "OpenBanking. Redirecting to ... %s " % redirectURL 
-            facesService = CdiUtil.bean(FacesService)
-            facesService.redirectToExternalURL(redirectURL)
-            return True
+                print "OpenBanking. Redirecting to ... %s " % redirectURL 
+                facesService = CdiUtil.bean(FacesService)
+                facesService.redirectToExternalURL(redirectURL)
+                return True
+      
+        
 		
-        print "OpenBanking. Call to Gluu's /authorize endpoint should contain openbanking_intent_id as an encoded JWT"
+        print "OpenBanking. Call to Jans-auth server's /authorize endpoint should contain openbanking_intent_id as an encoded JWT"
         return False
 
     def getExtraParametersForStep(self, configurationAttributes, step):
@@ -135,5 +142,16 @@ class PersonAuthentication(PersonAuthenticationType):
     def logout(self, configurationAttributes, requestParameters):
         return True
         
-
+    def isSignatureValid( token,  publickey) {
+		# Parse the JWS and verify its RSA signature
+		
+		try:
+			signedJWT = SignedJWT.parse(token)
+			#verifier =  RSASSAVerifier((RSAKey) publickey)
+            verifier =  RSASSAVerifier( publickey)
+			return signedJWT.verify(verifier)
+		except:
+            print "isSignatureValid. Exception: ", sys.exc_info()[1]
+            return False
+		
         
