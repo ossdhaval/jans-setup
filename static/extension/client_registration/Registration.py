@@ -34,6 +34,7 @@ class ClientRegistration(ClientRegistrationType):
 
         client.setDn("inum=" + cn + ",ou=clients,o=jans")
         client.setClientId(cn)
+        client.setJwksUri(Jwt.parse(registerRequest.getSoftwareStatement()).getClaims().getClaimAsString("org_jwks_endpoint"))
         
         return True
         
