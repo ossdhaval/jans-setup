@@ -58,7 +58,8 @@
     "grantTypesSupported":[
         "client_credentials",
         "authorization_code",
-        "refresh_token"
+        "refresh_token",
+        "implicit"
     ],
     "subjectTypesSupported":[
         "pairwise"
