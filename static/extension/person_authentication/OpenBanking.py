@@ -133,7 +133,7 @@ class PersonAuthentication(PersonAuthenticationType):
     def getPageForStep(self, configurationAttributes, step):
         print "OpenBanking. getPageForStep... %s" % step
         if step == 1:
-            return "/auth/redirect.xhtml"
+            return "/redirect.xhtml"
         
         return ""
     def getExtraParametersForStep(self, configurationAttributes, step):
