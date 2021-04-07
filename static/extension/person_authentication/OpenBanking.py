@@ -142,7 +142,7 @@ class PersonAuthentication(PersonAuthenticationType):
     def logout(self, configurationAttributes, requestParameters):
         return True
         
-    def isSignatureValid( token,  publickey) :
+    def isSignatureValid(self, token,  publickey) :
 		# Parse the JWS and verify its RSA signature
 		
 		try:
