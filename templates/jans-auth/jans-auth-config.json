@@ -58,9 +58,9 @@
     "grantTypesSupported":[
         "client_credentials",
         "authorization_code",
-        "refresh_token",
-        "implicit"
+        "refresh_token"
     ],
+    "allowIdTokenWithoutImplicitGrantType": true,
     "subjectTypesSupported":[
         "pairwise"
     ],
@@ -137,8 +137,7 @@
     "dynamicGrantTypeDefault":[
         "client_credentials",
         "authorization_code",
-        "refresh_token",
-        "implicit"
+        "refresh_token"
     ],
     "claimsParameterSupported":true,
     "requestParameterSupported":true,
