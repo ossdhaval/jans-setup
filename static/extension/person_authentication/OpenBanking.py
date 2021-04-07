@@ -60,7 +60,7 @@ class PersonAuthentication(PersonAuthenticationType):
         return None
 
     def authenticate(self, configurationAttributes, requestParameters, step):
-    	print "OpenBanking. Authenticate. Step %s " % step
+        print "OpenBanking. Authenticate. Step %s " % step
         
         sessionData =  ServerUtil.getFirstValue(requestParameters, "sessionData") 
  
@@ -105,7 +105,7 @@ class PersonAuthentication(PersonAuthenticationType):
             result = isSignatureValid(signedRequest, key)
             if (result == true):
                 signedJWT = SignedJWT.parse(signedRequest)
-				json  = JSONObject(signedJWT.getJWTClaimsSet().getClaims().get("claims"))
+                json  = JSONObject(signedJWT.getJWTClaimsSet().getClaims().get("claims"))
                 print "json "
                 json_id_token = JSONObject(json.get("id_token"))
                 print "json id_token"
@@ -119,7 +119,7 @@ class PersonAuthentication(PersonAuthenticationType):
                 return True
       
         
-		
+        
         print "OpenBanking. Call to Jans-auth server's /authorize endpoint should contain openbanking_intent_id as an encoded JWT"
         return False
 
@@ -143,15 +143,15 @@ class PersonAuthentication(PersonAuthenticationType):
         return True
         
     def isSignatureValid(self, token,  publickey) :
-		# Parse the JWS and verify its RSA signature
-		
-		try:
-			signedJWT = SignedJWT.parse(token)
-			#verifier =  RSASSAVerifier((RSAKey) publickey)
+        # Parse the JWS and verify its RSA signature
+        
+        try:
+            signedJWT = SignedJWT.parse(token)
+            #verifier =  RSASSAVerifier((RSAKey) publickey)
             verifier =  RSASSAVerifier( publickey)
-			return signedJWT.verify(verifier)
-		except:
+            return signedJWT.verify(verifier)
+        except:
             print "isSignatureValid. Exception: ", sys.exc_info()[1]
             return False
-		
+        
         
