@@ -102,7 +102,7 @@ class PersonAuthentication(PersonAuthenticationType):
         jwkSet = JWKSet.load( URL(self.tpp_jwks_url));
         signedRequest = ServerUtil.getFirstValue(requestParameters, "request")
         for key in jwkSet.getKeys() : 
-            result = isSignatureValid(signedRequest, key)
+            result = self.isSignatureValid(signedRequest, key)
             if (result == true):
                 signedJWT = SignedJWT.parse(signedRequest)
                 json  = JSONObject(signedJWT.getJWTClaimsSet().getClaims().get("claims"))
