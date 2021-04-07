@@ -103,7 +103,7 @@ class PersonAuthentication(PersonAuthenticationType):
         signedRequest = ServerUtil.getFirstValue(requestParameters, "request")
         for key in jwkSet.getKeys() : 
             result = self.isSignatureValid(signedRequest, key)
-            if (result == true):
+            if (result == True):
                 signedJWT = SignedJWT.parse(signedRequest)
                 json  = JSONObject(signedJWT.getJWTClaimsSet().getClaims().get("claims"))
                 print "json "
