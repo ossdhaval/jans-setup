@@ -80,7 +80,8 @@
     ],
     "requestObjectSigningAlgValuesSupported":[
         "HS256",
-        "RS256"
+        "RS256",
+        "PS256"
     ],
     "jwksAlgorithmsSupported":[
         "RS256",
