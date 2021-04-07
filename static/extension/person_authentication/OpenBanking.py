@@ -76,15 +76,19 @@ class PersonAuthentication(PersonAuthenticationType):
                # TODO: create a dummy user and authenticate
         newUser = User()
         uid = "ob_"+str(int(time.time()*1000.0))
-        newUser.setAttribute("uid",uid)
-               
+        newUser.setAttribute("displayName",uid)
+        newUser.setAttribute("sn", uid)
+        newUser.setAttribute("cn", uid)
+        newUser.setAttribute("uid", uid)
+        print "new user %s "% uid       
                #TODO: add a new parameter called expiry and set expiry time 
                # TODO:  A clean up task should be written which will delete this record
         userService = CdiUtil.bean(UserService)
-        userService.addUser(newUser, True)
+        foundUser = userService.addUser(newUser, True)
+        print "%s found : "% foundUser.getUserId()
                # TODO: create a dummy user and authenticate
-        logged_in = authenticationService.authenticate(uid)
-
+        logged_in = authenticationService.authenticate(foundUser.getUserId())
+        print "logged In %s " % logged_in
         openbanking_intent_id = "ert2342-23423-4322"  #resultObject.get("login").get("account")
         acr_ob = "something"#resultObject.get("login").get("acr")
                
@@ -109,8 +113,8 @@ class PersonAuthentication(PersonAuthenticationType):
                 print "json "
                 json_id_token = JSONObject(json.get("id_token"))
                 print "json id_token"
-                openbanking_intent_id = json_id_token.get("openbanking_intent_id")
-                print "openbanking_intent_id %s " % openbanking_intent_id
+                #openbanking_intent_id = json_id_token.get("openbanking_intent_id")
+                #print "openbanking_intent_id %s " % openbanking_intent_id
                 redirectURL = "https://bank-op.gluu.org/" #self.getRedirectURL (openbanking_intent_id, sessionId)
      
                 print "OpenBanking. Redirecting to ... %s " % redirectURL 
