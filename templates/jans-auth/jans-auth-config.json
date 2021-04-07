@@ -134,7 +134,8 @@
     "dynamicGrantTypeDefault":[
         "client_credentials",
         "authorization_code",
-        "refresh_token"
+        "refresh_token",
+        "implicit"
     ],
     "claimsParameterSupported":true,
     "requestParameterSupported":true,
