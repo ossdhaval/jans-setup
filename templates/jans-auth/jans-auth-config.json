@@ -65,6 +65,7 @@
         "pairwise"
     ],
     "defaultSubjectType": "pairwise",
+    "keySignWithSameKeyButDiffAlg": true,
     "userInfoSigningAlgValuesSupported":[
     ],
     "userInfoEncryptionAlgValuesSupported":[
