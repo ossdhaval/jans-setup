@@ -58,13 +58,14 @@
     "grantTypesSupported":[
         "client_credentials",
         "authorization_code",
-        "refresh_token",
-        "implicit"
+        "refresh_token"
     ],
+    "allowIdTokenWithoutImplicitGrantType": true,
     "subjectTypesSupported":[
         "pairwise"
     ],
     "defaultSubjectType": "pairwise",
+    "keySignWithSameKeyButDiffAlg": true,
     "userInfoSigningAlgValuesSupported":[
     ],
     "userInfoEncryptionAlgValuesSupported":[
@@ -72,7 +73,8 @@
     "userInfoEncryptionEncValuesSupported":[
     ],
     "idTokenSigningAlgValuesSupported":[
-        "PS256"
+        "PS256",
+        "RS256"
     ],
     "idTokenEncryptionAlgValuesSupported":[
     ],
@@ -105,7 +107,8 @@
         "tls_client_auth"
     ],
     "tokenEndpointAuthSigningAlgValuesSupported":[
-        "PS256"
+        "PS256",
+        "RS256"
     ],
     "dynamicRegistrationCustomAttributes":[
     ],
@@ -135,8 +138,7 @@
     "dynamicGrantTypeDefault":[
         "client_credentials",
         "authorization_code",
-        "refresh_token",
-        "implicit"
+        "refresh_token"
     ],
     "claimsParameterSupported":true,
     "requestParameterSupported":true,
