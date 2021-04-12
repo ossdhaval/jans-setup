@@ -27,6 +27,8 @@ from com.nimbusds.jose import Payload
 from com.nimbusds.jose.crypto import DirectDecrypter
 from com.nimbusds.jose.crypto import DirectEncrypter
 
+from java.util import UUID
+
 from java.net import URL
 import time
 import java
@@ -61,16 +63,14 @@ class PersonAuthentication(PersonAuthenticationType):
 
     def authenticate(self, configurationAttributes, requestParameters, step):
         print "OpenBanking. Authenticate. Step %s " % step
-        
-        sessionData =  ServerUtil.getFirstValue(requestParameters, "sessionData") 
- 
-        jweObject = JWEObject.parse(sessionData)
-        #Decrypt
-        jweObject.decrypt(DirectDecrypter((String(self.sharedSecret)).getBytes()))
+        identity = CdiUtil.bean(Identity)
+        # handle error from the consent app       
+        error = ServerUtil.getFirstValue(requestParameters, "error") 
+        if error is not None:
+            print "Restarting consent flow. Error from consent app.  - %s" % error
+            identity.setWorkingParameter("pass_authentication", False)
+            return False
 
-        # Get the plain text
-        payload = jweObject.getPayload()
-        print "session payload - "+payload.toString()
         authenticationService = CdiUtil.bean(AuthenticationService)
                
                # TODO: create a dummy user and authenticate
@@ -88,8 +88,9 @@ class PersonAuthentication(PersonAuthenticationType):
         print "%s found : "% foundUser.getUserId()
                # TODO: create a dummy user and authenticate
         logged_in = authenticationService.authenticate(foundUser.getUserId())
+        #identity.setWorkingParameter("pass_authentication", True)
         print "logged In %s " % logged_in
-        openbanking_intent_id = "ert2342-23423-4322"  #resultObject.get("login").get("account")
+        openbanking_intent_id = identity.getWorkingParameter("openbanking_intent_id")  #resultObject.get("login").get("account")
         acr_ob = "something"#resultObject.get("login").get("acr")
                
                # add a few things in session
@@ -109,14 +110,22 @@ class PersonAuthentication(PersonAuthenticationType):
             result = self.isSignatureValid(signedRequest, key)
             if (result == True):
                 signedJWT = SignedJWT.parse(signedRequest)
-                json  = JSONObject(signedJWT.getJWTClaimsSet().getClaims().get("claims"))
-                print "json "
-                json_id_token = JSONObject(json.get("id_token"))
-                print "json id_token"
-                #openbanking_intent_id = json_id_token.get("openbanking_intent_id")
-                #print "openbanking_intent_id %s " % openbanking_intent_id
-                redirectURL = "https://bank-op.gluu.org/" #self.getRedirectURL (openbanking_intent_id, sessionId)
-     
+                claims = JSONObject(signedJWT.getJWTClaimsSet().getClaims().get("claims"))
+                print "claims : %s " % claims.toString()
+                id_token = claims.get("id_token");
+                openbanking_intent_id = id_token.getJSONObject("openbanking_intent_id").getString("value")
+                
+                #header = JWEHeader(JWEAlgorithm.DIR, EncryptionMethod.A256GCM); 
+                #payload = Payload("{\"openbanking_intent_id\": \""+openbanking_intent_id+"\" }") 
+                #jweObject = JWEObject(header, payload);
+                #jweObject.encrypt(DirectEncrypter((String(self.sharedSecret)).getBytes()))
+                #jweString = jweObject.serialize();
+
+
+                print "openbanking_intent_id %s " % openbanking_intent_id
+                redirectURL = "https://bank-op.gluu.org/oxauth/authorize.htm?scope=openid+profile+email+user_name&acr_values=basic&response_type=code&redirect_uri=https%3A%2F%2Fbank.gluu.org%2Fjans-auth%2Fpostlogin.htm&nonce=72fc1a52-25a7-4293-929d-b61b8a05c9c4&client_id=0c76f3bb-b6de-49c4-8dff-f53d7b768f96&state="+UUID.randomUUID().toString()+"&intent_id="+openbanking_intent_id
+                identity = CdiUtil.bean(Identity)
+                identity.setWorkingParameter("openbanking_intent_id",openbanking_intent_id)
                 print "OpenBanking. Redirecting to ... %s " % redirectURL 
                 facesService = CdiUtil.bean(FacesService)
                 facesService.redirectToExternalURL(redirectURL)
@@ -127,13 +136,24 @@ class PersonAuthentication(PersonAuthenticationType):
         print "OpenBanking. Call to Jans-auth server's /authorize endpoint should contain openbanking_intent_id as an encoded JWT"
         return False
 
-    def getExtraParametersForStep(self, configurationAttributes, step):
-        return None
 
     def getCountAuthenticationSteps(self, configurationAttributes):
         return 1
     def getNextStep(self, configurationAttributes, requestParameters, step):
+        
+        #identity = CdiUtil.bean(Identity)
+
+        # If user not pass current step authenticaton redirect to current step
+        #pass_authentication = identity.getWorkingParameter("pass_authentication")
+        #if not pass_authentication:
+        #    resultStep = step
+        #    print "Restarting consent flow. %s'" % resultStep
+        #    return resultStep
+
         return -1
+    
+
+
     def getPageForStep(self, configurationAttributes, step):
         print "OpenBanking. getPageForStep... %s" % step
         if step == 1:
