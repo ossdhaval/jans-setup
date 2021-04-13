@@ -114,14 +114,6 @@ class PersonAuthentication(PersonAuthenticationType):
                 print "claims : %s " % claims.toString()
                 id_token = claims.get("id_token");
                 openbanking_intent_id = id_token.getJSONObject("openbanking_intent_id").getString("value")
-                
-                #header = JWEHeader(JWEAlgorithm.DIR, EncryptionMethod.A256GCM); 
-                #payload = Payload("{\"openbanking_intent_id\": \""+openbanking_intent_id+"\" }") 
-                #jweObject = JWEObject(header, payload);
-                #jweObject.encrypt(DirectEncrypter((String(self.sharedSecret)).getBytes()))
-                #jweString = jweObject.serialize();
-
-
                 print "openbanking_intent_id %s " % openbanking_intent_id
                 redirectURL = "https://bank-op.gluu.org/oxauth/authorize.htm?scope=openid+profile+email+user_name&acr_values=basic&response_type=code&redirect_uri=https%3A%2F%2Fbank.gluu.org%2Fjans-auth%2Fpostlogin.htm&nonce=72fc1a52-25a7-4293-929d-b61b8a05c9c4&client_id=0c76f3bb-b6de-49c4-8dff-f53d7b768f96&state="+UUID.randomUUID().toString()+"&intent_id="+openbanking_intent_id
                 identity = CdiUtil.bean(Identity)
