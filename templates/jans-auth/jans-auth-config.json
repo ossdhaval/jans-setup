@@ -178,7 +178,7 @@
     "dcrSignatureValidationSoftwareStatementJwksClaim": null,
     "dcrSignatureValidationJwks": null,
     "dcrSignatureValidationJwksUri": null,
-    "dcrAuthorizationWithClientCredentials": true,
+    "dcrAuthorizationWithClientCredentials": false,
     "dcrSkipSignatureValidation": true,
     "softwareStatementValidationType": "script",
     "softwareStatementValidationClaimName": "jwks_uri",
