@@ -40,54 +40,54 @@ class Introspection(IntrospectionType):
     def modifyResponse(self, responseAsJsonObject, context):
         print "modifyResponse invoked"
 
-        authorizationGrantList = CdiUtil.bean(AuthorizationGrantList)
-        grantService = CdiUtil.bean(GrantService)
+        #authorizationGrantList = CdiUtil.bean(AuthorizationGrantList)
+        #grantService = CdiUtil.bean(GrantService)
 
         sessionIdService = CdiUtil.bean(SessionIdService)
-        print "session id from context - %s" % context.getTokenGrant().getSessionDn().strip("oxId=")
+        print "session id from context - %s" % context.getTokenGrant().getSessionDn()
         sessionId = sessionIdService.getSessionByDn(context.getTokenGrant().getSessionDn()) # fetch from persistence
         openbanking_intent_id = sessionId.getSessionAttributes().get("openbanking_intent_id")
-        
+        print "openbanking_intent_id from session : "+openbanking_intent_id
 
-        refreshToken = context.getHttpRequest().getParameter("refresh_token")
-        if refreshToken is None:
-            print "No refresh token parameter. Put original claim - openbanking_intent_id=value1"
-            responseAsJsonObject.accumulate("openbanking_intent_id", openbanking_intent_id) # AT1
+        #refreshToken = context.getHttpRequest().getParameter("refresh_token")
+        #if refreshToken is None:
+        #    print "No refresh token parameter. Put original claim - openbanking_intent_id=value1"
+        #    responseAsJsonObject.accumulate("openbanking_intent_id", openbanking_intent_id) # AT1
 
             # save it also in refresh token
-            grants = grantService.getGrantsByGrantId(context.getTokenGrant().getGrantId())
-            RT1 = {}
-            for grant in grants:
-                if (grant.getTokenTypeEnum() == TokenType.REFRESH_TOKEN):
-                    RT1 = grant
+        #    grants = grantService.getGrantsByGrantId(context.getTokenGrant().getGrantId())
+        #    RT1 = {}
+        #    for grant in grants:
+        #        if (grant.getTokenTypeEnum() == TokenType.REFRESH_TOKEN):
+        #            RT1 = grant
+        #            print "RT1 hashed code: " + RT1.getTokenCode()
+        #            RT1.getAttributes().getAttributes().put("openbanking_intent_id", openbanking_intent_id)
+        #            grantService.mergeSilently(RT1)
+        #            return True
 
-            print "RT1 hashed code: " + RT1.getTokenCode()
-            RT1.getAttributes().getAttributes().put("openbanking_intent_id", openbanking_intent_id)
-            grantService.mergeSilently(RT1)
+        #responseAsJsonObject.accumulate("refresh_token", refreshToken)
+        #print "Refresh token: " + refreshToken
 
-            return True
+        #clientId = context.getTokenGrant().getClientId()
+        #print "ClientId: " + clientId
 
-        responseAsJsonObject.accumulate("refresh_token", refreshToken)
-        print "Refresh token: " + refreshToken
+        #grantId = authorizationGrantList.getAuthorizationGrantByRefreshToken(clientId, refreshToken).getGrantId()
+        #print "grantId: " + grantId
+        #responseAsJsonObject.accumulate("grant_id", grantId)
 
-        clientId = context.getTokenGrant().getClientId()
-        print "ClientId: " + clientId
+        #grants = grantService.getGrantsByGrantId(grantId)
 
-        grantId = authorizationGrantList.getAuthorizationGrantByRefreshToken(clientId, refreshToken).getGrantId()
-        print "grantId: " + grantId
-        responseAsJsonObject.accumulate("grant_id", grantId)
-
-        grants = grantService.getGrantsByGrantId(grantId)
-
-        RT = {}
-        for grant in grants:
-            if (grant.getTokenTypeEnum() == TokenType.REFRESH_TOKEN):
-                RT = grant
-        print "RT hashed code: " + RT.getTokenCode()
+        #RT = {}
+        #for grant in grants:
+        #    if (grant.getTokenTypeEnum() == TokenType.REFRESH_TOKEN):
+        #        RT = grant
+        #print "RT hashed code: " + RT.getTokenCode()
 
 
-        valueFromAT = RT.getAttributes().getAttributes().get("openbanking_intent_id")
-        print "valueFromAT: " + valueFromAT
+        #valueFromAT = RT.getAttributes().getAttributes().get("openbanking_intent_id")
+        #print "valueFromAT: " + valueFromAT
         responseAsJsonObject.accumulate("openbanking_intent_id", openbanking_intent_id)
 
         return True
+        
+    
