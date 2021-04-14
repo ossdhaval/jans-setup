@@ -5,19 +5,20 @@
 #
 #
 
-from org.gluu.model.custom.script.type.introspection import IntrospectionType
+from io.jans.model.custom.script.type.introspection import IntrospectionType
 from java.lang import String
-from org.gluu.oxauth.model.common import AuthorizationGrantList
-from org.gluu.service.cdi.util import CdiUtil
-from org.gluu.oxauth.service import GrantService
-from org.gluu.oxauth.model.ldap import TokenType
-from org.gluu.oxauth.model.ldap import TokenLdap
+from io.jans.as.server.model.common import AuthorizationGrantList
+from io.jans.service.cdi.util import CdiUtil
+from io.jans.as.server.service import GrantService
+from io.jans.as.model.common import TokenType
+from io.jans.as.server.model.ldap import TokenLdap
+from io.jans.as.server.service import SessionIdService
 
 class Introspection(IntrospectionType):
     def __init__(self, currentTimeMillis):
         self.currentTimeMillis = currentTimeMillis
 
-    def init(self, configurationAttributes):
+    def init(self, customScript, configurationAttributes):
         print "Introspection script (retain claims). Initializing ..."
         print "Introspection script (retain claims). Initialized successfully"
 
@@ -29,7 +30,7 @@ class Introspection(IntrospectionType):
         return True
 
     def getApiVersion(self):
-        return 1
+        return 11
 
     # Returns boolean, true - apply introspection method, false - ignore it.
     # This method is called after introspection response is ready. This method can modify introspection response.
@@ -42,10 +43,16 @@ class Introspection(IntrospectionType):
         authorizationGrantList = CdiUtil.bean(AuthorizationGrantList)
         grantService = CdiUtil.bean(GrantService)
 
+        sessionIdService = CdiUtil.bean(SessionIdService)
+        print "session id from context - %s" % context.getTokenGrant().getSessionDn().strip("oxId=")
+        sessionId = sessionIdService.getSessionByDn(context.getTokenGrant().getSessionDn()) # fetch from persistence
+        openbanking_intent_id = sessionId.getSessionAttributes().get("openbanking_intent_id")
+        
+
         refreshToken = context.getHttpRequest().getParameter("refresh_token")
         if refreshToken is None:
-            print "No refresh token parameter. Put original claim - claim1=value1"
-            responseAsJsonObject.accumulate("claim1", "value1") # AT1
+            print "No refresh token parameter. Put original claim - openbanking_intent_id=value1"
+            responseAsJsonObject.accumulate("openbanking_intent_id", openbanking_intent_id) # AT1
 
             # save it also in refresh token
             grants = grantService.getGrantsByGrantId(context.getTokenGrant().getGrantId())
@@ -55,7 +62,7 @@ class Introspection(IntrospectionType):
                     RT1 = grant
 
             print "RT1 hashed code: " + RT1.getTokenCode()
-            RT1.getAttributes().getAttributes().put("claim1", "value1")
+            RT1.getAttributes().getAttributes().put("openbanking_intent_id", openbanking_intent_id)
             grantService.mergeSilently(RT1)
 
             return True
@@ -79,8 +86,8 @@ class Introspection(IntrospectionType):
         print "RT hashed code: " + RT.getTokenCode()
 
 
-        valueFromAT = RT.getAttributes().getAttributes().get("claim1")
+        valueFromAT = RT.getAttributes().getAttributes().get("openbanking_intent_id")
         print "valueFromAT: " + valueFromAT
-        responseAsJsonObject.accumulate("claim1", valueFromAT)
+        responseAsJsonObject.accumulate("openbanking_intent_id", openbanking_intent_id)
 
         return True
