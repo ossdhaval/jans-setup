@@ -32,10 +32,18 @@ class ClientRegistration(ClientRegistrationType):
         cert = CertUtils.x509CertificateFromPem(configurationAttributes.get("certProperty").getValue1())
         cn = CertUtils.getCN(cert)
         print "Client registration. cn: " + cn
-
         client.setDn("inum=" + cn + ",ou=clients,o=jans")
+
+        #only authentication, consent is managed by Internal OP
         client.setTrustedClient(True)
         client.setPersistClientAuthorizations(False)
+
+        # inorder to run introspection script
+        client.setAccessTokenAsJwt(True)
+        client.getAttributes().setRunIntrospectionScriptBeforeAccessTokenAsJwtCreationAndIncludeClaims(True)  
+        dnOfIntrospectionScript = "inum=CABA-2222,ou=scripts,o=jans"
+        client.getAttributes().getIntrospectionScripts().add(dnOfIntrospectionScript)
+        
         client.setClientId(cn)
         client.setJwksUri(Jwt.parse(registerRequest.getSoftwareStatement()).getClaims().getClaimAsString("org_jwks_endpoint"))
         

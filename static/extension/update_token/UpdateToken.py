@@ -45,7 +45,6 @@ class UpdateToken(UpdateTokenType):
 			
 			#custom claims
 			jsonWebResponse.getClaims().setClaim("openbanking_intent_id", openbanking_intent_id)
-			jsonWebResponse.getClaims().setClaim("acr", acr)
 			
 			#regular claims        
 			jsonWebResponse.getClaims().setClaim("sub", openbanking_intent_id)

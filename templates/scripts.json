@@ -54,4 +54,23 @@
     "jansEnabled": 1,
     "jansProgLng": "python"
   }
+  ,
+  {
+    "dn": "inum=CABA-2222,ou=scripts,o=jans",
+    "description": "Openbanking Introspection Script",
+    "displayName": "introspection",
+    "inum": "CABA-2222",
+    "jansLevel": 102,
+    "jansModuleProperty": {
+      "v": [
+        "{\"value1\":\"v1\",\"value2\":\"v2\",\"description\":\"\"}"
+      ]
+    },
+    "jansRevision": 1,
+    "jansScr": %(introspection_introspectionscript)s,
+    "jansScrTyp": "introspection",
+    "objectClass": "jansCustomScr",
+    "jansEnabled": 1,
+    "jansProgLng": "python"
+  }
 ]
