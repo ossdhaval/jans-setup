@@ -18,7 +18,7 @@ class Introspection(IntrospectionType):
     def __init__(self, currentTimeMillis):
         self.currentTimeMillis = currentTimeMillis
 
-    def init(self, configurationAttributes):
+    def init(self, customScript, configurationAttributes):
         print "Introspection script (retain claims). Initializing ..."
         print "Introspection script (retain claims). Initialized successfully"
 
@@ -30,7 +30,7 @@ class Introspection(IntrospectionType):
         return True
 
     def getApiVersion(self):
-        return 1
+        return 11
 
     # Returns boolean, true - apply introspection method, false - ignore it.
     # This method is called after introspection response is ready. This method can modify introspection response.
