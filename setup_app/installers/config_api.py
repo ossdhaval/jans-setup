@@ -118,12 +118,6 @@ class ConfigApiInstaller(SetupUtils, BaseInstaller):
         if Config.installed_instance and self.dbUtils.search('ou=clients,o=jans', search_filter='(&(inum={})(objectClass=jansClnt))'.format(Config.jca_client_id)):
             createClient = False
 
-        jansUmaScopes_dn += [
-                        'inum=F0C4,ou=scopes,o=jans',
-                        'inum=764C,ou=scopes,o=jans',
-                        'inum=10B2,ou=scopes,o=jans'
-                        ]
-
         if createClient:
             client_json = json.dumps([{
                 'dn': config_api_dn,
