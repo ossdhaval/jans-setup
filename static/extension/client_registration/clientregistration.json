@@ -1,0 +1,103 @@
+{
+  "dn": "inum=DAA9-B788,ou=scripts,o=jans",
+  "inum": "DAA9-B788",
+  "name": "client_registration",
+  "aliases": null,
+  "description": "Openbanking Client Registration",
+  "script": "_file Registration.py ",
+  "scriptType": "CLIENT_REGISTRATION",
+  "programmingLanguage": "PYTHON",
+  "moduleProperties": [
+    {
+      "value1": "v1",
+      "value2": "v2",
+      "description": null
+    }
+  ],
+  "configurationProperties": [
+    {
+      "value1": "clientScopes",
+      "value2": "ASPSPReadAccessAuthoritiesReadAccessTPPReadAccess",
+      "description": null,
+      "hide": false
+    },
+    {
+      "value1": "keyId",
+      "value2": "GkwIzWy88xWSlcWnLiEc8ip9s2M",
+      "description": null,
+      "hide": false
+    },
+    {
+      "value1": "signingCert",
+      "value2": "/etc/certs/obieDir/AMTWPPovGpsZ3LQ2VQbyB4XcTyw.pem",
+      "description": null,
+      "hide": false
+    },
+    {
+      "value1": "signingKey",
+      "value2": "/etc/certs/obieDir/obsigning-axV5umCvTMBMjPwjFQgEvb_NO_UPLOAD.key",
+      "description": null,
+      "hide": false
+    },
+    {
+      "value1": "transportKeyStore",
+      "value2": "/etc/certs/obieDir/axv5umcvtmbmjpwjfqgevb_openbanking_pre_production_issuing_ca_.p12",
+      "description": null,
+      "hide": false
+    },
+    {
+      "value1": "transportKeyStorePassword",
+      "value2": "Password123",
+      "description": null,
+      "hide": false
+    },
+    {
+      "value1": "tokenUrl",
+      "value2": "https://matls-sso.openbankingtest.org.uk/as/token.oauth2/",
+      "description": null,
+      "hide": false
+    },
+    {
+      "value1": "tppUrl",
+      "value2": "https://matls-api.openbankingtest.org.uk/scim/v2/OBThirdPartyProviders/",
+      "description": null,
+      "hide": false
+    },
+    {
+      "value1": "aud",
+      "value2": "https://matls-sso.openbankingtest.org.uk/as/token.oauth2",
+      "description": null,
+      "hide": false
+    },
+    {
+      "value1": "rootCert",
+      "value2": "/etc/certs/obieDir/root.pem",
+      "description": null,
+      "hide": false
+    },
+    {
+      "value1": "issuingaca",
+      "value2": "/etc/certs/obieDir/issuingca.pem",
+      "description": null,
+      "hide": false
+    },
+    {
+      "value1": "signingaca",
+      "value2": "/etc/certs/obieDir/signingca.pem",
+      "description": null,
+      "hide": false
+    },
+    {
+      "value1": "jwks_endpoint",
+      "value2": "https://keystore.openbankingtest.org.uk/keystore/openbanking.jwks",
+      "description": null,
+      "hide": false
+    }
+  ],
+  "level": 100,
+  "revision": 1,
+  "enabled": true,
+  "scriptError": null,
+  "modified": false,
+  "internal": false
+}
