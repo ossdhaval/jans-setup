@@ -4,7 +4,7 @@
   "name": "client_registration",
   "aliases": null,
   "description": "Openbanking Client Registration",
-  "script": "_file Registration.py ",
+  "script": "_file Registration.py",
   "scriptType": "CLIENT_REGISTRATION",
   "programmingLanguage": "PYTHON",
   "moduleProperties": [
