@@ -150,6 +150,7 @@ class ConfigApiInstaller(SetupUtils, BaseInstaller):
             self.load_files.append(self.clients_json_fn)
 
     def render_import_templates(self):
+        Config.templateRenderingDict['apiApprovedIssuer'] = base.argsp.approved_issuer or Config.hostname
         oxauth_config = json.loads(json.loads(Config.templateRenderingDict['oxauth_config']))
         for param in ('issuer', 'openIdConfigurationEndpoint', 'introspectionEndpoint', 'tokenEndpoint', 'tokenRevocationEndpoint'):
             Config.templateRenderingDict[param] = oxauth_config[param]

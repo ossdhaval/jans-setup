@@ -34,6 +34,8 @@ def arg_parser():
     parser.add_argument('--shell', help="Drop into interactive shell before starting installation", action='store_true')
     parser.add_argument('--no-progress', help="Use simple progress", action='store_true')
 
+    parser.add_argument('-approved-issuer', help="Api Approved Issuer")
+
     # openbanking
     parser.add_argument('--no-external-key', help="Don't use external key", action='store_true')
     parser.add_argument('-ob-key-fn', help="Openbanking key filename")
