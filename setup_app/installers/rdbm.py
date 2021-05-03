@@ -52,10 +52,6 @@ class RDBMInstaller(BaseInstaller, SetupUtils):
 
         if Config.rdbm_install_type == InstallTypes.LOCAL:
             if Config.rdbm_type == 'mysql':
-                if not self.packageUtils.check_installed('mysql-server'):
-                    Config.pbar.progress(self.service_name, "Installing MySQL Server", False)
-                    self.packageUtils.installNetPackage('mysql-server')
-
                 Config.pbar.progress(self.service_name, "Re-starting MySQL Server", False)
                 serverd = 'mysqld' if base.clone_type == 'rpm' else 'mysql'
                 self.restart(serverd)
@@ -70,10 +66,6 @@ class RDBMInstaller(BaseInstaller, SetupUtils):
                         self.run("echo \"{}\" | mysql".format(cmd), shell=True)
 
             elif Config.rdbm_type == 'pgsql':
-                if not self.packageUtils.check_installed('postgresql-server'):
-                    Config.pbar.progress(self.service_name, "Installing PgSQL Server", False)
-                    self.packageUtils.installNetPackage('postgresql-server')
-
                 Config.pbar.progress(self.service_name, "Re-starting PgSQL Server", False)
                 self.restart('postgresql-server')
                 cmd_create_db = '''su - postgres -c "psql -U postgres -d postgres -c \\"CREATE DATABASE {};\\""'''.format(Config.rdbm_db)

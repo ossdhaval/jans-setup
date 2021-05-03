@@ -154,6 +154,10 @@ if not Config.noPrompt:
         proceed = False
 
 
+# re-check packages
+if proceed:
+    packageUtils.check_and_install_packages()
+
 # register post setup progress
 class PostSetup:
     service_name = 'post-setup'
