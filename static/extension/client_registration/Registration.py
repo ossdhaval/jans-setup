@@ -222,7 +222,7 @@ class ClientRegistration(ClientRegistrationType):
         accessToken = self.getAccessToken(softwareStatementId)
 	passed = self.verifyRoles(accessToken, softwareStatementId)
 	print "Software verification passed : "+ str(passed)
-
+        return passed
    
 		        
     def buildPostDataFortoken(self, encodedJWT, softwareStatementId) :
