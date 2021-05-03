@@ -22,7 +22,7 @@ class PackageUtils(SetupUtils):
             update_command = 'yum install -y epel-release'
             query_command = 'rpm -q {0}'
             check_text = 'is not installed'
-            
+
         return install_command, update_command, query_command, check_text
 
 
