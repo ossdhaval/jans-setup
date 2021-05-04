@@ -198,15 +198,9 @@ class JansInstaller(BaseInstaller, SetupUtils):
         self.writeFile(os.path.join(Config.jansOptBinFolder, 'encode.py'), encode_script)
         self.logIt("Error rendering encode script", True)
 
-        super_gluu_lisence_renewer_fn = os.path.join(Config.staticFolder, 'scripts', 'super_gluu_license_renewer.py')
-
         if base.snap:
-            target_fn = os.path.join(Config.jansOptBinFolder, 'super_gluu_lisence_renewer.py')
-            self.run(['cp', '-f', super_gluu_lisence_renewer_fn, target_fn])
-
+            pass
         else:
-            target_fn = '/etc/cron.daily/super_gluu_lisence_renewer'
-            self.run(['cp', '-f', super_gluu_lisence_renewer_fn, target_fn])
             self.run([paths.cmd_chown, 'root:root', target_fn])
             self.run([paths.cmd_chmod, '+x', target_fn])
 
