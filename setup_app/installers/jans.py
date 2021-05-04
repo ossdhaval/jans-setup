@@ -201,9 +201,6 @@ class JansInstaller(BaseInstaller, SetupUtils):
         if base.snap:
             pass
         else:
-            self.run([paths.cmd_chown, 'root:root', target_fn])
-            self.run([paths.cmd_chmod, '+x', target_fn])
-
             print_version_scr_fn = os.path.join(Config.install_dir, 'setup_app/utils/printVersion.py')
             self.run(['cp', '-f', print_version_scr_fn , Config.jansOptBinFolder])
             self.run([paths.cmd_ln, '-s', 'printVersion.py' , 'show_version.py'], cwd=Config.jansOptBinFolder)
