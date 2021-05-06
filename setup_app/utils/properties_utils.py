@@ -179,7 +179,7 @@ class PropertiesUtils(SetupUtils):
 
             self.prompt_for_rdbm()
 
-            use_external_key_prompt = input('Use external key? [Y|n]')
+            use_external_key_prompt = input('Use external key? [Y|n] : ')
             Config.use_external_key = not use_external_key_prompt.lower().startswith('n')
 
             if Config.use_external_key:

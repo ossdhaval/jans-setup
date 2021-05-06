@@ -51,8 +51,10 @@ class RDBMInstaller(BaseInstaller, SetupUtils):
             Config.rdbm_user = 'jans'
 
         if Config.rdbm_install_type == InstallTypes.LOCAL:
-
             if Config.rdbm_type == 'mysql':
+                Config.pbar.progress(self.service_name, "Re-starting MySQL Server", False)
+                serverd = 'mysqld' if base.clone_type == 'rpm' else 'mysql'
+                self.restart(serverd)
                 result, conn = self.dbUtils.mysqlconnection(log=False)
                 if not result:
                     sql_cmd_list = [
@@ -64,6 +66,8 @@ class RDBMInstaller(BaseInstaller, SetupUtils):
                         self.run("echo \"{}\" | mysql".format(cmd), shell=True)
 
             elif Config.rdbm_type == 'pgsql':
+                Config.pbar.progress(self.service_name, "Re-starting PgSQL Server", False)
+                self.restart('postgresql-server')
                 cmd_create_db = '''su - postgres -c "psql -U postgres -d postgres -c \\"CREATE DATABASE {};\\""'''.format(Config.rdbm_db)
                 cmd_create_user = '''su - postgres -c "psql -U postgres -d postgres -c \\"CREATE USER {} WITH PASSWORD '{}';\\""'''.format(Config.rdbm_user, Config.rdbm_password)
                 cmd_grant_previlages = '''su - postgres -c "psql -U postgres -d postgres -c \\"GRANT ALL PRIVILEGES ON DATABASE {} TO {};\\""'''.format(Config.rdbm_db, Config.rdbm_user)

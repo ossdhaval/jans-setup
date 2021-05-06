@@ -1,4 +1,5 @@
 import os
+import re
 import glob
 import shutil
 
@@ -66,8 +67,11 @@ class HttpdInstaller(BaseInstaller, SetupUtils):
             self.copyFile(tmp_fn, '/var/www/html')
 
         # we only need these modules
-        mods_enabled = ['env', 'proxy_http', 'access_compat', 'alias', 'authn_core', 'authz_core', 'authz_host', 'headers', 'mime', 'mpm_event', 'proxy', 'proxy_ajp', 'security2', 'reqtimeout', 'setenvif', 'socache_shmcb', 'ssl', 'unique_id']
-
+        mods_enabled = [
+                'env', 'proxy_http', 'access_compat', 'alias', 'authn_core', 'authz_core', 
+                'authz_host', 'headers', 'mime', 'mpm_event', 'proxy', 'proxy_ajp', 'security2', 
+                'reqtimeout', 'setenvif', 'socache_shmcb', 'ssl', 'unique_id', 'rewrite',
+                ]
 
         if base.snap:
             mods_enabled_dir = os.path.join(base.snap_common, 'etc/apache2/mods-enabled')
@@ -92,26 +96,43 @@ class HttpdInstaller(BaseInstaller, SetupUtils):
 
         elif base.clone_type == 'rpm':
 
-            for mod_load_fn in glob.glob('/etc/httpd/conf.modules.d/*'):
+            mod_load_dir = '/etc/httpd/conf.modules.d/*'
+
+            # sometimes rpm module name is different, fix them
+            for modd, modr in [('rewrite', 'mod_rewrite'), ('headers','mod_headers')]:
+                if modd in mods_enabled:
+                    ni = mods_enabled.index(modd)
+                    mods_enabled[ni] = modr
+
+            for mod_load_fn in glob.glob(mod_load_dir):
 
                 with open(mod_load_fn) as f:
                     mod_load_content = f.readlines()
 
                 modified = False
-
                 for i, l in enumerate(mod_load_content[:]):
                     ls = l.strip()
+                    mod_status = None
+                    if ls.endswith('.so'):
+                        if ls.startswith('LoadModule'):
+                            mod_status = 'enabled'
+                            lm = ls[10:].strip()
+                        else:
+                            res = re.search('^[#]+[\s]*LoadModule', ls)
+                            if res:
+                                mod_status = 'disabled'
+                                lm = ls[res.span()[-1]+1:]
 
-                    if ls and not ls.startswith('#'):
-                        lsl = ls.split('/')
-                        module =  lsl[-1][4:-3]
-
-                        if not module in mods_enabled:
-                            mod_load_content[i] = l.replace('LoadModule', '#LoadModule')
-                            modified = True
+                        if mod_status:
+                            lm_list = lm.split()
+                            m_name = os.path.basename(lm_list[1])[:-3]
+                            if mod_status == 'disabled' and m_name in mods_enabled:
+                                mod_load_content[i] = l.lstrip('#')
+                                modified = True
 
                 if modified:
                     self.writeFile(mod_load_fn, ''.join(mod_load_content))
+
         else:
 
             cmd_a2enmod = shutil.which('a2enmod')
